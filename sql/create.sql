@@ -6,7 +6,7 @@ CREATE TABLE Users (
     uni TEXT,
 	email TEXT NOT NULL,
 	personalDescription TEXT,
-    userName TEXT,
+    userName TEXT NOT NULL,
 	major TEXT,
 	PRIMARY KEY (uni)
 );
