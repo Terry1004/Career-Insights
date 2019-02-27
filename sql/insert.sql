@@ -77,4 +77,62 @@ VALUES
     'yh3065',
     'Test',
     'Hello World!'
-)
+),
+
+(
+    'av2845',
+	'Senior Software Engineer'
+    'As a big data engineer at Ericsson, I had good hands-on exposure to all the cutting edge big data distributed systems. Ericsson is a fun place to work'
+),
+
+(
+    'rfc2117',
+	'Assistant Director of Student Services'
+    'Columbia DSI is a great place to work. I enjoy working with DSIers. They are cool'
+),
+
+(
+    'aj2839',
+	'Software Developer Intern'
+    'Developed AAC app for children with Cerebral palsy, Autism & speech difficulty. It was great'
+),
+
+(
+    'alk2225',
+	'Data Scientist at INCITE'
+    'Working on setting an index for educational institutions. The lab provides great opportunities'
+),
+
+(
+    'yw3201',
+	'Research assistant at stackNLP'
+    'Great NLP work !!!'
+),
+
+(
+    'xh2389',
+    'Assistant data analyst',
+    'Collaborated with product management team of Ping An Bank to identify, verify and assemble financial data for analysis to identify target customers. ',
+),
+
+(
+    'yz3453',
+	'Research assistant'
+    'Columbia research is of world class standards'
+),
+
+(
+    'nr2409',
+	'Product Manager'
+    'Wayfair provides great PM experience'
+),
+
+(
+    'cb3441',
+	'Deep learning Researcher'
+    'Involved in deep learning research at columbia. The opportunity is fantastic!'
+);
+
+
+
+
