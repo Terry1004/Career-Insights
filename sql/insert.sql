@@ -111,15 +111,109 @@ VALUES
 (
     'yz3453',
 	'Research assistant',
-    'Columbia research is of world class standards.'
+    'Google''s interview is very difficult, but I finally made it. Hurray!' 
 ),
 (
     'nr2409',
 	'Product Manager',
-    'Wayfair provides great PM experience.'
+    'The inerviewer is very nice!'
 ),
 (
     'cb3441',
 	'Deep learning Researcher',
     'Involved in deep learning research at columbia. The opportunity is fantastic!'
+);
+
+INSERT INTO Tags (
+    postId, postType, rate, position, company, hashtags, domain
+) VALUES
+(
+    1,
+    'Internship Experience',
+    4,
+    'Software Engineer',
+    'iFlytek Toycloud Ltd Co.',
+    '{"developer","helloworld"}',
+    'Software Engineer'
+),
+(
+    2,
+    'Full-time Experience',
+    3,
+    'Senior Software Engineer',
+    'Ericsson India',
+    '{"bigdatalife"}',
+    'Big Data'
+),
+(
+    3,
+    'Full-time Experience',
+    5,
+    'Assistant Director',
+    'Columbia University',
+    '{"columbia","DSI"}',
+    'Management'
+),
+(
+    4,
+    'Internship Experience',
+    3,
+    'Software Engineer',
+    'Industrial Design Centre',
+    '{"mobile development"}',
+    'Software Engineer'
+),
+(
+    5,
+    'Full-time Experience',
+    4,
+    'Data Scientist',
+    'INCITE',
+    '{"data","research"}',
+    'Data Science'
+),
+(
+    6,
+    'Full-time Experience',
+    3,
+    'Research Assistant',
+    'stackNLP',
+    '{"NLP","research","startup"}',
+    'Data Science'
+),
+(
+    7,
+    'Full-time Experience',
+    5,
+    'Data Analyst',
+    'Ping An Bank',
+    '{"finance","bigdata"}',
+    'Finance'
+),
+(
+    8,
+    'Interview Experience',
+    4,
+    'Research Assistant',
+    'Google',
+    '{"NLP","datatheworld"}',
+    'Data Science'
+),
+(
+    9,
+    'Interview Experience',
+    5,
+    'Product Manager',
+    'Wayfair',
+    '{"bussiness","nicewayfair"}',
+    'Management'
+),
+(
+    10,
+    'Intenrship Experience',
+    4,
+    'Research Assistant',
+    'Columbia University',
+    '{"columbia","deep learning", "research"}',
+    'Data Science'
 );
