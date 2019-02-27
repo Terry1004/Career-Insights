@@ -53,7 +53,7 @@ VALUES
     'yz3453',
     'yz3453@columbia.edu',
     'Smart Data Scientist',
-    'Yufan Zhang',
+    'Yufan Zhuang',
     'Data Science'
 ),
 (
@@ -75,64 +75,51 @@ INSERT INTO Posts (uni, title, content)
 VALUES
 (
     'yh3065',
-    'Test',
-    'Hello World!'
+    'Software Engineer Intern',
+    'During the software engineer internship, I have gained a lot of hands-on practice on production level coding with the help of my mentor. It is a great place to work!'
 ),
-
 (
     'av2845',
-	'Senior Software Engineer'
-    'As a big data engineer at Ericsson, I had good hands-on exposure to all the cutting edge big data distributed systems. Ericsson is a fun place to work'
+	'Senior Software Engineer',
+    'As a big data engineer at Ericsson, I had good hands-on exposure to all the cutting edge big data distributed systems. Ericsson is a fun place to work.'
 ),
-
 (
     'rfc2117',
-	'Assistant Director of Student Services'
-    'Columbia DSI is a great place to work. I enjoy working with DSIers. They are cool'
+	'Assistant Director of Student Services',
+    'Columbia DSI is a great place to work. I enjoy working with DSIers. They are cool.'
 ),
-
 (
     'aj2839',
-	'Software Developer Intern'
-    'Developed AAC app for children with Cerebral palsy, Autism & speech difficulty. It was great'
+	'Software Developer Intern',
+    'Developed AAC app for children with Cerebral palsy, Autism & speech difficulty. It was great.'
 ),
-
 (
     'alk2225',
-	'Data Scientist at INCITE'
-    'Working on setting an index for educational institutions. The lab provides great opportunities'
+	'Data Scientist at INCITE',
+    'Working on setting an index for educational institutions. The lab provides great opportunities.'
 ),
-
 (
     'yw3201',
-	'Research assistant at stackNLP'
+	'Research assistant at stackNLP',
     'Great NLP work !!!'
 ),
-
 (
     'xh2389',
     'Assistant data analyst',
-    'Collaborated with product management team of Ping An Bank to identify, verify and assemble financial data for analysis to identify target customers. ',
+    'Collaborated with product management team of Ping An Bank to identify, verify and assemble financial data for analysis to identify target customers.'
 ),
-
 (
     'yz3453',
-	'Research assistant'
-    'Columbia research is of world class standards'
+	'Research assistant',
+    'Columbia research is of world class standards.'
 ),
-
 (
     'nr2409',
-	'Product Manager'
-    'Wayfair provides great PM experience'
+	'Product Manager',
+    'Wayfair provides great PM experience.'
 ),
-
 (
     'cb3441',
-	'Deep learning Researcher'
+	'Deep learning Researcher',
     'Involved in deep learning research at columbia. The opportunity is fantastic!'
 );
-
-
-
-
