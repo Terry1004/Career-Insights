@@ -1,0 +1,19 @@
+select all users that have an experience of being research assistant
+select all users that are data science majors
+select all users that have worked for columbia as interns
+select all experiences in the domain data science 
+select every user's first post
+
+1) select username from Users 
+				join Experience 
+				on Users.UNI = experience.UNI 
+				where experience.Title like research
+				
+2) select username from Users where major=data science
+
+3) select username from Users 
+					join Posts on Users.UNI = posts.UNI 
+					join Tags on Posts.id = Tags.postId
+					where tags.company=columbia and tags.category=internship
+					
+4) select content,min(timestamp) from experience group by UNI 
