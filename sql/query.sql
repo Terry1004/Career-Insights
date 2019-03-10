@@ -18,16 +18,20 @@ WHERE t.company IN (
 
 SELECT u.userName
 FROM Users u JOIN (
-    SELECT uni
-    FROM Comments
-    GROUP BY uni
-    ORDER BY COUNT(*) DESC
-    LIMIT 3
+    (
+        SELECT uni
+        FROM Comments
+        GROUP BY uni
+        ORDER BY COUNT(*) DESC
+        LIMIT 3
+    )
     UNION
-    SELECT uni
-    FROM Posts
-    GROUP BY uni
-    ORDER BY COUNT(*) DESC
-    LIMIT 3
+    (
+        SELECT uni
+        FROM Posts
+        GROUP BY uni
+        ORDER BY COUNT(*) DESC
+        LIMIT 3
+    )
 ) sub
 ON u.uni = sub.uni;
