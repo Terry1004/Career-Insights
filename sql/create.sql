@@ -7,9 +7,9 @@ DROP TABLE IF EXISTS Replies CASCADE;
 CREATE TABLE Users (
     uni TEXT,
 	email TEXT NOT NULL,
-	personalDescription TEXT,
-    userName TEXT NOT NULL,
-	major TEXT,
+	personalDescription TEXT NOT NULL DEFAULT '',
+    userName TEXT NOT NULL DEFAULT '',
+	major TEXT NOT NULL DEFAULT '',
 	PRIMARY KEY (uni)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE Posts (
 	uni TEXT,
 	timePosted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	title TEXT NOT NULL,
-	content TEXT,
+	content TEXT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (uni) REFERENCES Users
 );
@@ -26,12 +26,12 @@ CREATE TABLE Posts (
 CREATE TABLE Tags (
 	id SERIAL,
 	postId INT UNIQUE NOT NULL,
-	postType TEXT,
+	postType TEXT NOT NULL DEFAULT '',
 	rate INT,
-	position TEXT,
-	company TEXT,
-	hashtags TEXT[],
-	domain TEXT,
+	position TEXT NOT NULL,
+	company TEXT NOT NULL DEFAULT '',
+	hashtags TEXT[] NOT NULL DEFAULT '{}',
+	domain TEXT NOT NULL DEFAULT '',
 	CHECK (rate BETWEEN 0 AND 5),
 	PRIMARY KEY (id),
 	FOREIGN KEY (postId) REFERENCES Posts
@@ -42,7 +42,7 @@ CREATE TABLE Comments (
 	commentId INT,
 	uni TEXT NOT NULL,
 	timePosted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	content TEXT,
+	content TEXT NOT NULL,
 	PRIMARY KEY (postId, commentId),
 	FOREIGN KEY (uni) REFERENCES Users,
 	FOREIGN KEY (postId) REFERENCES Posts (id) ON DELETE CASCADE

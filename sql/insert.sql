@@ -276,60 +276,18 @@ INSERT INTO Comments (postId, commentId, uni, content) VALUES
 (
 	5,
 	6,
-	'alk2225'.
+	'alk2225',
 	'Researching on educational institutions is great because it uncovers a lot of truth.'
-)
-;
+);
 
 INSERT INTO Replies (commentId, replyId, postId) VALUES
-(
-	1,
-	1,
-	1
-),
-(
-	2,
-	2,
-	2
-)
-(
-	6,
-	3,
-	5
-),
-(
-	26,
-	4,
-	5
-),
-(
-	5,
-	5,
-	4
-),
-(
-	4,
-	6,
-	3
-),
-(
-	16,
-	7,
-	4
-),
-(
-	14,
-	8,
-	2
-),
-(
-	15,
-	9,
-	1
-),
-(
-	3,
-	10,
-	3
-)
-;
+(1, 1, 1),
+(2, 2, 2),
+(6, 3, 5),
+(26, 4, 5),
+(5, 5, 4),
+(4, 6, 3),
+(16, 7, 4),
+(14, 8, 2),
+(15, 9, 1),
+(3, 10, 3);
