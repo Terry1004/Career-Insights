@@ -220,10 +220,116 @@ INSERT INTO Tags (
 
 INSERT INTO Comments (postId, commentId, uni, content) VALUES
 (
-
-);
+	1,
+	1,
+	'av2845',
+	'Can you share one specific use case that you implemented for the business?'
+),
+(
+	2,
+	2,
+	'alk2225',
+	'How was the work life balance at Ericsson?'
+),
+(
+	3,
+	3,
+	'yh3065',
+	'What is different about columbia compared to other universities?'
+),
+(
+	1,
+	15,
+	'yh3065',
+	'I developed a web application and designed the front of our product. It was well brainstormed and appreciated.'
+),
+(
+	2,
+	14,
+	'av2845',
+	'Work life balance is awesome. All you need to do is get the job done on time. No one really bothers you about your ways of working'
+),
+(
+	4,
+	16,
+	'av2845',
+	'What was the most motivational part about your job?'
+),
+(
+	3,
+	4,
+	'rfc2117',
+	'Columbia got the brightest students from across the world. It is fun and interesting to help them get great jobs!!'
+),
+(
+	4,
+	5,
+	'aj2839',
+	'Motivation came from being helpful to the differently abled children'
+),
+(
+	5,
+	26,
+	'yw3201',
+	'What was the most exciting thing about your job?'
+),
+(
+	5,
+	6,
+	'alk2225'.
+	'Researching on educational institutions is great because it uncovers a lot of truth.'
+)
+;
 
 INSERT INTO Replies (commentId, replyId, postId) VALUES
 (
-
-);
+	1,
+	1,
+	1
+),
+(
+	2,
+	2,
+	2
+)
+(
+	6,
+	3,
+	5
+),
+(
+	26,
+	4,
+	5
+),
+(
+	5,
+	5,
+	4
+),
+(
+	4,
+	6,
+	3
+),
+(
+	16,
+	7,
+	4
+),
+(
+	14,
+	8,
+	2
+),
+(
+	15,
+	9,
+	1
+),
+(
+	3,
+	10,
+	3
+)
+;
