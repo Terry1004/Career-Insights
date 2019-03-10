@@ -217,3 +217,13 @@ INSERT INTO Tags (
     '{"columbia","deep learning", "research"}',
     'Data Science'
 );
+
+INSERT INTO Comments (postId, commentId, uni, content) VALUES
+(
+
+);
+
+INSERT INTO Replies (commentId, replyId, postId) VALUES
+(
+
+);

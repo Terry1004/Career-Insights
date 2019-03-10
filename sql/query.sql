@@ -1,7 +1,7 @@
 SELECT u.userName
 FROM Users u JOIN Posts p
 ON u.uni = p.uni
-WHERE lower(p.title) LIKE '%research%';
+WHERE LOWER(p.title) LIKE '%research%';
 
 SELECT u.userName, t.company, t.rate
 FROM Users u JOIN Posts p
