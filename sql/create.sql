@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS Replies CASCADE;
 
 CREATE TABLE Users (
     uni TEXT,
+	password TEXT NOT NULL,
 	email TEXT NOT NULL,
 	personalDescription TEXT NOT NULL DEFAULT '',
     userName TEXT NOT NULL DEFAULT '',

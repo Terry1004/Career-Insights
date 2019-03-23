@@ -2,6 +2,7 @@ INSERT INTO Users
 VALUES 
 (
     'yh3065',
+    'pbkdf2:sha256:50000$KPBejYUx$a4568de871443efb78989fc252c0874d99b1e25f98f97e32c1a785f4af055729',
     'yh3065@columbia.edu',
     'Hello World!',
     'Yiming Huang',
@@ -9,6 +10,7 @@ VALUES
 ),
 (
     'av2845',
+    'pbkdf2:sha256:50000$GpGpqYZY$446bfeff09c59b3d779eba51c8cc37941a5d88718393ce837246c1cf715e9f5a',
     'av2845@columbia.edu',
     'Crazy Data Science Grad',
     'Aishwarya',
@@ -16,6 +18,7 @@ VALUES
 ),
 (
     'rfc2117',
+    'pbkdf2:sha256:50000$njqxec25$f77849137c0521673449393710706e32f387f4aba1f8ced6ae72098e9d615822',
     'rfc2117@columbia.edu',
     'Assistant Director of Student Services',
     'Rachel Fuld Cohen',
@@ -23,6 +26,7 @@ VALUES
 ),
 (
     'aj2839',
+    'pbkdf2:sha256:50000$VGR6oNcY$5ecb3a614b4f9fe06f64f402a5111d929a5945f2dcc6bca37e5a5b81bd1b2843',
     'aj2839@columbia.edu',
     'MS in DS',
     'Aastha Joshi',
@@ -30,6 +34,7 @@ VALUES
 ),
 (
     'alk2225',
+    'pbkdf2:sha256:50000$mqSwVOPk$8248dbcf37af443324d4ee4891d308254ecca891fb20164158abff93dc7f5c80',
     'alk2225@columbia.edu',
     'Data for good',
     'Alex Kong',
@@ -37,6 +42,7 @@ VALUES
 ),
 (
     'yw3201',
+    'pbkdf2:sha256:50000$YADAwbr2$6c3f661c44e358187119f121a39ffa02827f62108b4ffdc12624b4993b9a0dcd',
     'yw3201@columbia.edu',
     'Cool Data Scientist',
     'Yiran Wang',
@@ -44,6 +50,7 @@ VALUES
 ),
 (
     'xh2389',
+    'pbkdf2:sha256:50000$T3Lbtps8$90cd8138b4b7c3f3a572996e2a0b30153b45dc3a28afb16d47e94f725b3e1c27',
     'xh2389@columbia.edu',
     'Nice Data Scientist',
     'Xinxin Huang',
@@ -51,6 +58,7 @@ VALUES
 ),
 (
     'yz3453',
+    'pbkdf2:sha256:50000$ilUBkXVC$e2730df6d99be0ef2e38d0d5e2a533b1a62d5638bd6e44cb309f19bc21987e3a',
     'yz3453@columbia.edu',
     'Smart Data Scientist',
     'Yufan Zhuang',
@@ -58,6 +66,7 @@ VALUES
 ),
 (
     'cb3441',
+    'pbkdf2:sha256:50000$ywmz0tOO$14ec2eb67a18d8978b6372587816c32fb5a9a0eeb77a035c11d416f4fed1fd74',
     'cb3441@columbia.edu',
     'Student Council Member: DSI Studnet Council',
     'Anirudh',
@@ -65,6 +74,7 @@ VALUES
 ),
 (
     'nr2409',
+    'pbkdf2:sha256:50000$tTLepLgw$0095810e900349c0afa94156a71792b9855ac8a9189800b6c9af7625ae3066c0',
     'nr2409@columbia.edu',
     'Product Manager at Wayfair',
     'Nikhil Raman',
