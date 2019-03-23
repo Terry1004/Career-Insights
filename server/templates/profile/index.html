@@ -1,0 +1,15 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+    <h1>Profile</h1>
+    <div>
+        <h2>Name: {{ user.username }}</h2>
+        <h2>Major: {{ user.major }}</h2>
+        <h2>UNI: {{ user.uni }}</h2>
+        <h2>Email: {{ user.email }}</h2>
+        <h2>Personal Summary:</h2>
+        <p>{{ user.personal_des }}</p>
+    </div>
+{% endblock %}

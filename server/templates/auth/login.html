@@ -1,0 +1,14 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block main %}
+    <h1>Login</h1>
+    <form action="/auth/login" method="POST">
+        <p>UNI: </p>
+        <input type="text" name="uni">
+        <p>Password: </p>
+        <input type="password" name="password">
+        <input type="submit" value="Login">
+    </form>
+{% endblock %}
