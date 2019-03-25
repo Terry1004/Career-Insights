@@ -23,8 +23,8 @@ def login_required(view):
 def register():
     if request.method == 'POST':
         uni = request.form['uni']
-        email = request.form['email']
         password = request.form['password']
+        email = request.form['email']
         error = None
         if not uni:
             error = 'UNI is required.'
