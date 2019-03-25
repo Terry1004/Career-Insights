@@ -1,0 +1,15 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Edit Profie{% endblock %}
+
+{% block main %}
+<form action="/profile/edit" method="POST">
+    <input type="password" name="password">
+    <input type="text" name="email" value="{{ user.email }}">
+    <input type="text" name="personal_des" value="{{ user.personal_des }}
+    ">
+    <input type="text" name="username" value="{{ user.username }}">
+    <input type="text" name="major" value="{{ user.major }}">
+    <input type="submit" value="Update">
+</form>
+{% endblock %}
