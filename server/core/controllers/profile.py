@@ -19,4 +19,16 @@ def profile():
 @blueprint.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    pass
+    uni = session['uni']
+    if request.method == 'POST':
+        password = request.form['password']
+        email = request.form['email']
+        personal_des = request.form['personal_des']
+        username = request.form['username']
+        major = request.form['major']
+        user = User(uni, password, email, personal_des, username, major)
+        user.save(update=True)
+        return redirect('/profile')
+    else:
+        user = User.findByUni(uni)
+        return render_template('profile/edit.html', user=user)
