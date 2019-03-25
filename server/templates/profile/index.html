@@ -4,12 +4,13 @@
 
 {% block main %}
     <h1>Profile</h1>
+    <a href="/profile/edit">Edit Profile</a>
     <div>
-        <h2>Name: {{ user.username }}</h2>
-        <h2>Major: {{ user.major }}</h2>
-        <h2>UNI: {{ user.uni }}</h2>
-        <h2>Email: {{ user.email }}</h2>
-        <h2>Personal Summary:</h2>
+        <p>Name: {{ user.username }}</p>
+        <p>Major: {{ user.major }}</p>
+        <p>UNI: {{ user.uni }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Personal Summary:</p>
         <p>{{ user.personal_des }}</p>
     </div>
 {% endblock %}
