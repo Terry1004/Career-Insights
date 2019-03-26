@@ -56,7 +56,7 @@ def login():
         if error is None:
             session.clear()
             session['uni'] = user.uni
-            print(f'User: {user.uni} login Successful')
+            print('User: {} login Successful',format(user.uni))
             return redirect(url_for('index'))
         flash(error)
     return render_template('auth/login.html')
