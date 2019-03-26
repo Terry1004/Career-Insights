@@ -33,7 +33,7 @@ def register():
         else:
             user = User.findByUni(uni)
             if not user:
-                user = User(uni, email, password)
+                user = User(uni, password, email)
                 user.save()
                 return redirect(url_for('auth.login'))
             else:
