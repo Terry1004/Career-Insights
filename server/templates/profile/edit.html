@@ -1,20 +1,18 @@
-{% extends "layout/default.html" %}
-
-{% block title %}Edit Profie{% endblock %}
-
+{% extends "layout/default.html" %} {% block title %}Edit Profie{% endblock %}
 {% block main %}
 <form action="/profile/edit" method="POST">
-    <p>Password: </p>
-    <input type="password" name="password">
-    <p>Email: </p>
-    <input type="text" name="email" value="{{ user.email }}">
-    <p>Personal Summary: </p>
-    <input type="text" name="personal_des" value="{{ user.personal_des }}
-    ">
-    <p>Name: </p>
-    <input type="text" name="username" value="{{ user.username }}">
-    <p>Major: </p>
-    <input type="text" name="major" value="{{ user.major }}">
-    <input type="submit" value="Update">
+    <p>Password:</p>
+    <input type="password" name="password" />
+    <p>Email:</p>
+    <input type="text" name="email" value="{{ user.email }}" />
+    <p>Personal Summary:</p>
+    <textarea name="personal_des" cols="30" rows="10">{{
+        user.personal_des
+    }}</textarea>
+    <p>Name:</p>
+    <input type="text" name="username" value="{{ user.username }}" />
+    <p>Major:</p>
+    <input type="text" name="major" value="{{ user.major }}" />
+    <input type="submit" value="Update" />
 </form>
 {% endblock %}
