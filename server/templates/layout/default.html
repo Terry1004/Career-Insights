@@ -29,7 +29,7 @@
     </nav>
     <main>
         {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
+            <div>{{ message }}</div>
         {% endfor %}
         {% block main %}{% endblock %}
     </main>
