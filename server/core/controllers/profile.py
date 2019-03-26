@@ -21,13 +21,21 @@ def profile():
 def edit():
     uni = session['uni']
     if request.method == 'POST':
+        error = None
         password = request.form['password']
         email = request.form['email']
         personal_des = request.form['personal_des']
         username = request.form['username']
         major = request.form['major']
-        user = User(uni, password, email, personal_des, username, major)
-        user.save(update=True)
+        if not password:
+            error = 'Password cannot be empty.'
+        if error:
+            flash(error)
+            user = User.findByUni(uni)
+            return render_template('profile/edit.html', user=user)
+        else:
+            user = User(uni, password, email, personal_des, username, major)
+            user.save(update=True)
         return redirect('/profile')
     else:
         user = User.findByUni(uni)
