@@ -3,5 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block main %}
-    <h1>Dummy Homepage</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <p>UNI: {{ post.uni }}, Title: {{ post.title }}, Content: {{ post.content }}, Id: {{ post.id }}, Time Posted: {{post.time_posted }}</p>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
