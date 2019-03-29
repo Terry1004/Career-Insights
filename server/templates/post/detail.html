@@ -1,0 +1,12 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Post Detail{% endblock %}
+
+{% block main %}
+    <ul>
+        <li>Title: {{ post.title }}</li>
+        <li>UNI: {{ post.uni }}</li>
+        <li>Time Posted: {{ post.time_posted }}</li>
+        <p>{{ post.content }}</p>
+    </ul>
+{% endblock %}

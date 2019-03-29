@@ -16,7 +16,7 @@ def index():
     if user:
         return render_template('profile/index.html', user=user)
     else:
-        return render_template('/error/404.html', message='User Not Found.')
+        return render_template('error/404.html', message='User Not Found.')
 
 
 @blueprint.route('/edit', methods=['GET', 'POST'])
@@ -41,4 +41,4 @@ def edit():
     if user:
             return render_template('profile/edit.html', user=user)
     else:
-        return render_template('/error/404.html', message='User Not Found.')
+        return render_template('error/404.html', message='User Not Found.')
