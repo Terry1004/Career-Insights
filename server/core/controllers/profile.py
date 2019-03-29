@@ -36,7 +36,7 @@ def edit():
         else:
             user = User(uni, password, email, personal_des, username, major)
             user.save(update=True)
-        return redirect('/profile')
+        return redirect(url_for('profile.profile'))
     else:
         user = User.findByUni(uni)
         return render_template('profile/edit.html', user=user)
