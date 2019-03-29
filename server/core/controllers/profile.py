@@ -10,7 +10,7 @@ blueprint = Blueprint('profile', __name__, url_prefix='/profile')
 
 @blueprint.route('/', methods=['GET'])
 @login_required
-def profile():
+def index():
     uni = session['uni']
     user = User.findByUni(uni)
     return render_template('profile/index.html', user=user)
@@ -36,7 +36,7 @@ def edit():
         else:
             user = User(uni, password, email, personal_des, username, major)
             user.save(update=True)
-        return redirect(url_for('profile.profile'))
+        return redirect(url_for('profile.index'))
     else:
         user = User.findByUni(uni)
         return render_template('profile/edit.html', user=user)
