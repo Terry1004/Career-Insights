@@ -6,7 +6,21 @@
     <ul>
         {% for post in posts %}
             <li>
-                <p>UNI: {{ post.uni }}, Title: {{ post.title }}, Content: {{ post.content }}, Id: {{ post.id }}, Time Posted: {{post.time_posted }}</p>
+                <ul>
+                    
+                        <li>UNI: {{ post.uni }}</li>
+                        <li>Title: {{ post.title }}</li>
+                        <li>Id: {{ post.id }}</li>
+                        <li>Time Posted: {{ post.time_posted }}</li>
+                        {% if post.user %}
+                            <li>User Name: {{ post.user.username }}</li>
+                            <li>User Email: {{ post.user.email }}</li>
+                            <li>User Major: {{ post.user.major }}</li>
+                        {% else %}
+                            <p>User Deleted.</p>
+                        {% endif %}
+                        <p>Content: {{ post.content }}</p>
+                </ul>
             </li>
         {% endfor %}
     </ul>

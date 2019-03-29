@@ -1,4 +1,5 @@
 from flask import current_app
+from .user import User
 
 
 class Post:
@@ -14,10 +15,25 @@ class Post:
     def fetchall(cls):
         sql_string = """
             SELECT uni, title, content, id, timeposted
-            FROM posts
+            FROM Posts
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string)
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
+
+    @property
+    def user(self):
+        sql_string = """
+            SELECT uni, password, email, personalDescription, username, major
+            FROM Users
+            WHERE Users.uni = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, self.uni)
+            user = cursor.fetchone()
+        if not user:
+            return None
+        else:
+            return User(*user, hash=False)
