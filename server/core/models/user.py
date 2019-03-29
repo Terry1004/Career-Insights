@@ -19,14 +19,14 @@ class User:
         self.major = major
 
     @classmethod
-    def findByUni(cls, uni):
-        sqlString = """
+    def find_by_uni(cls, uni):
+        sql_string = """
             SELECT uni, password, email, personalDescription, username, major
             FROM Users
             WHERE uni = %s
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sqlString, uni)
+            cursor = connection.execute(sql_string, uni)
             user = cursor.fetchone()
         if not user:
             return None
@@ -34,13 +34,13 @@ class User:
             return cls(*user, hash=False)
 
     def save(self, update=False):
-        insertString = """
+        insert_string = """
             INSERT INTO Users (
                 uni, password, email, personalDescription, username, major
             )
             VALUES (%s, %s, %s, %s, %s, %s)
         """
-        updateString = """
+        update_string = """
             UPDATE Users
             SET password = %s, email = %s,
             personalDescription = %s, username = %s, major = %s
@@ -49,7 +49,7 @@ class User:
         with current_app.database.begin() as connection:
             if not update:
                 connection.execute(
-                    insertString,
+                    insert_string,
                     (
                         self.uni, self.password, self.email,
                         self.personal_des, self.username, self.major
@@ -57,7 +57,7 @@ class User:
                 )
             else:
                 connection.execute(
-                    updateString,
+                    update_string,
                     (
                         self.password, self.email, self.personal_des,
                         self.username, self.major, self.uni

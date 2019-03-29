@@ -31,7 +31,7 @@ def register():
         elif not password:
             error = 'Password is required.'
         else:
-            user = User.findByUni(uni)
+            user = User.find_by_uni(uni)
             if not user:
                 user = User(uni, password, email)
                 user.save()
@@ -47,7 +47,7 @@ def login():
     if request.method == 'POST':
         uni = request.form['uni']
         password = request.form['password']
-        user = User.findByUni(uni)
+        user = User.find_by_uni(uni)
         error = None
         if not user:
             error = 'UNI not found.'

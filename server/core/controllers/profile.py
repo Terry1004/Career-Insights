@@ -12,7 +12,7 @@ blueprint = Blueprint('profile', __name__, url_prefix='/profile')
 @login_required
 def index():
     uni = session['uni']
-    user = User.findByUni(uni)
+    user = User.find_by_uni(uni)
     return render_template('profile/index.html', user=user)
 
 
@@ -31,12 +31,12 @@ def edit():
             error = 'Password cannot be empty.'
         if error:
             flash(error)
-            user = User.findByUni(uni)
+            user = User.find_by_uni(uni)
             return render_template('profile/edit.html', user=user)
         else:
             user = User(uni, password, email, personal_des, username, major)
             user.save(update=True)
         return redirect(url_for('profile.index'))
     else:
-        user = User.findByUni(uni)
+        user = User.find_by_uni(uni)
         return render_template('profile/edit.html', user=user)
