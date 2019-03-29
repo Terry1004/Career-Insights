@@ -53,7 +53,7 @@ def login():
             error = 'UNI not found.'
         elif not check_password_hash(user.password, password):
             error = 'Incorrect Password.'
-        if error is None:
+        if not error:
             session.clear()
             session['uni'] = user.uni
             print('User: {} login Successful'.format(user.uni))

@@ -13,7 +13,10 @@ blueprint = Blueprint('profile', __name__, url_prefix='/profile')
 def index():
     uni = session['uni']
     user = User.find_by_uni(uni)
-    return render_template('profile/index.html', user=user)
+    if user:
+        return render_template('profile/index.html', user=user)
+    else:
+        return render_template('/error/404.html', message='User Not Found.')
 
 
 @blueprint.route('/edit', methods=['GET', 'POST'])
@@ -29,14 +32,13 @@ def edit():
         major = request.form['major']
         if not password:
             error = 'Password cannot be empty.'
-        if error:
-            flash(error)
-            user = User.find_by_uni(uni)
-            return render_template('profile/edit.html', user=user)
-        else:
+        if not error:
             user = User(uni, password, email, personal_des, username, major)
             user.save(update=True)
-        return redirect(url_for('profile.index'))
+            return redirect(url_for('profile.index'))
+        flash(error)
+    user = User.find_by_uni(uni)
+    if user:
+            return render_template('profile/edit.html', user=user)
     else:
-        user = User.find_by_uni(uni)
-        return render_template('profile/edit.html', user=user)
+        return render_template('/error/404.html', message='User Not Found.')
