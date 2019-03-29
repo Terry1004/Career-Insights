@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from sqlalchemy import create_engine
 
 from utils.database import get_db_url
-from core.controllers import auth, profile
+from core.controllers import auth, profile, post
 
 
 app = Flask(__name__)
@@ -11,11 +11,12 @@ app.config.from_pyfile('config.cfg')
 app.database = create_engine(get_db_url(app.config))
 app.register_blueprint(auth.blueprint)
 app.register_blueprint(profile.blueprint)
+app.register_blueprint(post.bluePrint)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('post.index'))
 
 
 if __name__ == "__main__":
