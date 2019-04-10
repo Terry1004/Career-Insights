@@ -3,6 +3,9 @@
 {% block title %}Post Detail{% endblock %}
 
 {% block main %}
+    {% if uni == post.uni %}
+        <a href="/post/edit-post/{{ post.id }}">Edit Post</a>
+    {% endif %}
     <ul>
         <li>Title: {{ post.title }}</li>
         <li>UNI: {{ post.uni }}</li>

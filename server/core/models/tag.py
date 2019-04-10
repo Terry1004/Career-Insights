@@ -38,6 +38,10 @@ class Tag:
             ','.join('"{}"'.format(hashtag) for hashtag in self.hashtags)
         )
 
+    @property
+    def hashtags_dis(self):
+        return ','.join(self.hashtags)
+
     def save(self, update=False):
         insert_string = """
             INSERT INTO Tags (

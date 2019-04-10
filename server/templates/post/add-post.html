@@ -5,21 +5,23 @@
 {% block main %}
     <form action="/post/add-post" method="POST">
         <p>Title: </p>
-        <input type="text" name="title">
+        <input type="text" name="title" value="{% if post %}{{ post.title }}{% endif %}">
         <p>Content: </p>
-        <textarea name="content" cols="30" rows="10"></textarea>
+        <textarea name="content" cols="30" rows="10">
+        {% if post %}{{ post.content }}{% endif %}
+        </textarea>
         <p>Post Type: </p>
-        <input type="text" name="post_type">
+        <input type="text" name="post_type" value="{% if post %}{{ post.tag.post_type }}{% endif %}">
         <p>Rate: </p>
-        <input type="number" name="rate">
+        <input type="number" name="rate" value="{% if post %}{{ post.tag.rate }}{% endif %}">
         <p>Position</p>
-        <input type="text" name="position">
+        <input type="text" name="position" value="{% if post %}{{ post.tag.position }}{% endif %}">
         <p>Company: </p>
-        <input type="text" name="company">
+        <input type="text" name="company" value="{% if post %}{{ post.tag.company }}{% endif %}">
         <p>Hashtags: </p>
-        <input type="text" name="hashtags">
+        <input type="text" name="hashtags" value="{% if post %}{{ post.tag.hashtags_dis }}{% endif %}">
         <p>Domain: </p>
-        <input type="text" name="domain">
-        <input type="submit" value="Add New Post">
+        <input type="text" name="domain" value="{% if post %}{{ post.tag.domain }}{% endif %}">
+        <input type="submit" value="Edit">
     </form>
 {% endblock %}

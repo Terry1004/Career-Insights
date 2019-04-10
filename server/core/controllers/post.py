@@ -18,8 +18,12 @@ def index():
 @bluePrint.route('/<post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
+    if 'uni' in session:
+        uni = session['uni']
+    else:
+        uni = None
     if post:
-        return render_template('post/detail.html', post=post)
+        return render_template('post/detail.html', post=post, uni=uni)
     else:
         return render_template('error/404.html', message='Post Not Found.')
 
@@ -45,4 +49,25 @@ def add_post():
         post.save()
         tag.save()
         return redirect(url_for('post.detail', post_id=post_id))
-    return render_template('post/add-post.html')
+    return render_template('post/add-post.html', post=None)
+
+
+@bluePrint.route('/edit-post/<post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.find_by_id(post_id)
+    tag = post.tag
+    if request.method == 'POST':
+        post.uni = session['uni']
+        post.title = request.form['title']
+        post.content = request.form['content']
+        tag.post_type = request.form['post_type']
+        tag.rate = request.form['rate']
+        tag.position = request.form['position']
+        tag.company = request.form['company']
+        tag.hashtags = request.form['hashtags'].split(',')
+        tag.domain = request.form['domain']
+        post.save()
+        tag.save()
+        return redirect(url_for('post.detail', post_id=post_id))
+    return render_template('post/add-post.html', post=post)
