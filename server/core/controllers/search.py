@@ -1,10 +1,10 @@
 from flask import (
     Blueprint, redirect, render_template, request, flash, session, url_for
 )
-from ..models.search import Search
+from ..models.post import Post
 
 
-bluePrint = Blueprint('post', __name__, url_prefix='/search')
+bluePrint = Blueprint('search', __name__, url_prefix='/search')
 
 @bluePrint.route('/search', methods=['GET'])
 def detail():
@@ -14,12 +14,12 @@ def detail():
     keywords = request.args.get('keywords')
     title = request.args.get('title')
 
-    post1 = Search.find_by_company(company)
-    post2 = Search.find_by_name(name)
-    post3 = Search.find_from_posts(uni, title, keywords)
+    post1 = Post.find_by_company(company)
+    post2 = Post.find_by_name(name)
+    post3 = Post.find_from_posts(uni, title, keywords)
+    all_posts = post1+post2+post3
 
-    # change this line to combine all posts and send
-    if post1:
-        return render_template('post/detail.html', post=post1)
+    if all_posts:
+        return render_template('post/index.html', post=all_posts)
     else:
-        return render_template('error/404.html', message='Post Not Found.')
+        return render_template('error/404.html', message='No Posts Found relevant to search')

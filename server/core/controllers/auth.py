@@ -9,7 +9,6 @@ from ..models.user import User
 
 blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 
-
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
