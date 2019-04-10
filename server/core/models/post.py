@@ -1,5 +1,6 @@
 from flask import current_app
 from .user import User
+from .tag import Tag
 
 
 class Post:
@@ -10,6 +11,7 @@ class Post:
         self.content = content
         self.id = post_id
         self.time_posted = time_posted
+        self.tag = Tag.find_by_post_id(post_id)
 
     @classmethod
     def fetchall(cls):

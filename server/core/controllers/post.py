@@ -12,6 +12,7 @@ def index():
     posts = Post.fetchall()
     return render_template('post/index.html', posts=posts)
 
+
 @bluePrint.route('/<post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
