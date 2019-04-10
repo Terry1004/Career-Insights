@@ -1,0 +1,25 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block main %}
+    <form action="/post/add-post" method="POST">
+        <p>Title: </p>
+        <input type="text" name="title">
+        <p>Content: </p>
+        <textarea name="content" cols="30" rows="10"></textarea>
+        <p>Post Type: </p>
+        <input type="text" name="post_type">
+        <p>Rate: </p>
+        <input type="number" name="rate">
+        <p>Position</p>
+        <input type="text" name="position">
+        <p>Company: </p>
+        <input type="text" name="company">
+        <p>Hashtags: </p>
+        <input type="text" name="hashtags">
+        <p>Domain: </p>
+        <input type="text" name="domain">
+        <input type="submit" value="Add New Post">
+    </form>
+{% endblock %}

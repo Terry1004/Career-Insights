@@ -43,6 +43,17 @@ class Post:
         else:
             return cls(*post)
 
+    @classmethod
+    def get_max_id(cls):
+        sql_string = """
+            SELECT MAX(id)
+            FROM Posts
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string)
+            max_id = cursor.fetchone()[0]
+        return max_id
+
     @property
     def user(self):
         sql_string = """
@@ -64,6 +75,11 @@ class Post:
                 uni, title, content
             ) VALUES (%s, %s, %s)
         """
+        insert_string_id = """
+            INSERT INTO Posts (
+                id, uni, title, content
+            ) VALUES (%s, %s, %s, %s)
+        """
         update_string = """
             UPDATE Posts
             SET title = %s, content = %s
@@ -71,10 +87,16 @@ class Post:
         """
         with current_app.database.begin() as connection:
             if not update:
-                connection.execute(
-                    insert_string,
-                    (self.uni, self.title, self.content)
-                )
+                if not self.id:
+                    connection.execute(
+                        insert_string,
+                        (self.uni, self.title, self.content)
+                    )
+                else:
+                    connection.execute(
+                        insert_string_id,
+                        (self.id, self.uni, self.title, self.content)
+                    )
             else:
                 connection.execute(
                     update_string,
