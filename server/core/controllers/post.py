@@ -3,6 +3,7 @@ from flask import (
 )
 from ..models.post import Post
 from ..models.tag import Tag
+from ..models.comment import Comment
 from .auth import login_required
 
 
@@ -18,12 +19,15 @@ def index():
 @bluePrint.route('/<post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
+    comments = Comment.find_all_comments(post_id)
     if 'uni' in session:
         uni = session['uni']
     else:
         uni = None
     if post:
-        return render_template('post/detail.html', post=post, uni=uni)
+        return render_template(
+            'post/detail.html', post=post, uni=uni, comments=comments
+        )
     else:
         return render_template('error/404.html', message='Post Not Found.')
 

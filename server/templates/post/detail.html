@@ -24,4 +24,14 @@
         </p>
         <p>Domain: {{ post.tag.domain }}</p>
     </ul>
+    <p>Comments: </p>
+    <ul>
+        {% for indent, reply in comments %}
+        <div style="margin-left: {{ indent * 5 }}em">
+            <li>Uni: {{ reply.uni }}</li>
+            <li>Content: {{ reply.content }}</li>
+            <li>Time Posted: {{ reply.time_posted }}</li>
+        </div>
+        {% endfor %}
+    </ul>
 {% endblock %}

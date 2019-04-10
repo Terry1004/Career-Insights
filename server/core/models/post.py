@@ -108,24 +108,26 @@ class Post:
         sql_string = """
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE uni = %s 
-            OR title LIKE %s 
+            WHERE uni = %s
             OR title LIKE %s
-            OR content LIKE %s 
+            OR title LIKE %s
+            OR content LIKE %s
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string,uni,title, keywords, keywords)
+            cursor = connection.execute(
+                sql_string,
+                (uni, title, keywords, keywords)
+            )
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
 
-
     @classmethod
     def find_by_name(cls, name):
         sql_string = """
-            WITH temp AS 
+            WITH temp AS
             (
-            SELECT uni 
+            SELECT uni
             FROM Users
             WHERE userName LIKE %s
             )
@@ -144,9 +146,9 @@ class Post:
     @classmethod
     def find_by_company(cls, company):
         sql_string = """
-            WITH temp AS 
+            WITH temp AS
             (
-            SELECT postId 
+            SELECT postId
             FROM Tags
             WHERE company LIKE %s
             )
@@ -165,9 +167,9 @@ class Post:
     @classmethod
     def find_by_keywords(cls, keywords):
         sql_string = """
-            WITH temp AS 
+            WITH temp AS
             (
-            SELECT postId 
+            SELECT postId
             FROM Tags
             WHERE hashtags LIKE %s
             OR domain LIKE %s
