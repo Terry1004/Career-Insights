@@ -82,9 +82,9 @@ class Post:
             SELECT uni, title, content, id, timePosted
             FROM Posts
             WHERE uni = %s 
-            OR title LIKE %s 
-            OR title LIKE %s
-            OR content LIKE %s 
+            OR LOWER(title) LIKE LOWER(%s)
+            OR LOWER(title) LIKE LOWER(%s)
+            OR LOWER(content) LIKE LOWER(%s)
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string,uni,title, keywords, keywords)
@@ -100,11 +100,12 @@ class Post:
             (
             SELECT uni 
             FROM Users
-            WHERE userName LIKE %s
+            WHERE LOWER(userName) LIKE LOWER(%s)
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE uni in temp.uni
+            WHERE uni
+            IN (SELECT uni from temp)
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, name)
@@ -121,11 +122,12 @@ class Post:
             (
             SELECT postId 
             FROM Tags
-            WHERE company LIKE %s
+            WHERE LOWER(company) LIKE LOWER(%s)
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE id in temp.postId
+            WHERE id
+            IN (SELECT postId from temp)
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, company)
@@ -147,7 +149,8 @@ class Post:
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE id in temp.postId
+            WHERE id
+            IN (SELECT postId from temp)
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, keywords, keywords)
