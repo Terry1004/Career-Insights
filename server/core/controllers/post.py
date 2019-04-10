@@ -67,7 +67,7 @@ def edit_post(post_id):
         tag.company = request.form['company']
         tag.hashtags = request.form['hashtags'].split(',')
         tag.domain = request.form['domain']
-        post.save()
-        tag.save()
+        post.save(update=True)
+        tag.save(update=True)
         return redirect(url_for('post.detail', post_id=post_id))
     return render_template('post/add-post.html', post=post)
