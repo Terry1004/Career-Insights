@@ -104,7 +104,7 @@ class Post:
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE uni = temp.uni
+            WHERE uni in temp.uni
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, name)
@@ -125,7 +125,7 @@ class Post:
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE id = temp.postId
+            WHERE id in temp.postId
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, company)
@@ -147,7 +147,7 @@ class Post:
             )
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE id = temp.postId
+            WHERE id in temp.postId
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, keywords, keywords)

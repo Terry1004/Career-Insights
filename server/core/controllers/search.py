@@ -7,7 +7,7 @@ from ..models.post import Post
 bluePrint = Blueprint('search', __name__, url_prefix='/search')
 
 
-@bluePrint.route('/', methods=['GET','POST'])
+@bluePrint.route('', methods=['GET','POST'])
 def detail():
     if request.method == 'GET':
         return render_template('search/search.html')
