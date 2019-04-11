@@ -21,6 +21,7 @@ class Post:
         sql_string = """
             SELECT uni, title, content, id, timePosted
             FROM Posts
+            ORDER BY timePosted DESC
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string)
