@@ -1,5 +1,6 @@
 from flask import (
-    Blueprint, redirect, render_template, request, flash, session, url_for
+    Blueprint, redirect, render_template,
+    request, flash, session, url_for, abort
 )
 from ..models.post import Post
 
@@ -27,6 +28,4 @@ def detail():
         if all_posts:
             return render_template('post/index.html', post=all_posts)
         else:
-            return render_template(
-                'error/404.html', message='No Posts Found relevant to search'
-            )
+            abort(404)

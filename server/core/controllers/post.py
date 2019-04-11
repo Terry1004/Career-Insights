@@ -1,5 +1,6 @@
 from flask import (
-    Blueprint, redirect, render_template, request, flash, session, url_for
+    Blueprint, redirect, render_template,
+    request, flash, session, url_for, abort
 )
 from ..models.post import Post
 from ..models.tag import Tag
@@ -29,7 +30,7 @@ def detail(post_id):
             'post/detail.html', post=post, uni=uni, comments=comments
         )
     else:
-        return render_template('error/404.html', message='Post Not Found.')
+        abort(404)
 
 
 @blueprint.route('/add-post', methods=['GET', 'POST'])
@@ -61,8 +62,9 @@ def add_post():
 def edit_post(post_id):
     post = Post.find_by_id(post_id)
     tag = post.tag
+    if post.uni != session['uni']:
+        abort(403)
     if request.method == 'POST':
-        post.uni = session['uni']
         post.title = request.form['title']
         post.content = request.form['content']
         tag.post_type = request.form['post_type']

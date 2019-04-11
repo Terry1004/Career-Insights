@@ -51,6 +51,19 @@ class Comment:
         return comments
 
     @classmethod
+    def find_by_id(cls, post_id, comment_id):
+        sql_string = """
+            SELECT postId, commentId, uni, content, timePosted
+            FROM Comments
+            WHERE postId = %s AND commentId = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, (post_id, comment_id))
+            comment_raw = cursor.fetchone()
+            comment = cls(*comment_raw)
+        return comment
+
+    @classmethod
     def get_max_id(cls, post_id):
         sql_string = """
             SELECT MAX(commentId)
@@ -76,6 +89,7 @@ class Comment:
         update_comment_string = """
             UPDATE Comments
             SET content = %s
+            WHERE postId = %s AND commentId = %s
         """
         with current_app.database.begin() as connection:
             if not update:
@@ -91,7 +105,7 @@ class Comment:
             else:
                 connection.execute(
                     update_comment_string,
-                    self.content
+                    (self.content, self.post_id, self.id)
                 )
 
     @property

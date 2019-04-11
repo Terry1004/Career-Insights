@@ -1,5 +1,6 @@
 from flask import (
-    Blueprint, redirect, render_template, request, flash, session, url_for
+    Blueprint, redirect, render_template,
+    request, flash, session, url_for, abort
 )
 from ..models.user import User
 from .auth import login_required
@@ -16,7 +17,7 @@ def index():
     if user:
         return render_template('profile/index.html', user=user)
     else:
-        return render_template('error/404.html', message='User Not Found.')
+        abort(404)
 
 
 @blueprint.route('/edit', methods=['GET', 'POST'])
