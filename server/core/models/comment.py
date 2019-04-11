@@ -47,7 +47,6 @@ class Comment:
                 comment_tree[comment_id].append(reply)
         comments = []
         traverse(comment_tree, None, comments, -1)
-        print(comment_tree)
         return comments
 
     @classmethod
