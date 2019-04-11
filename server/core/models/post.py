@@ -77,17 +77,41 @@ class Post:
                 )
 
     @classmethod
-    def find_from_posts(cls, uni, title, keywords):
+    def find_by_keywords(cls, keywords):
+        sql_string = """
+            SELECT uni, title, content, id, timePosted
+            FROM Posts
+            WHERE LOWER(title) LIKE LOWER(%s)
+            OR LOWER(content) LIKE LOWER(%s)
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string,str('%')+keywords+str('%'), str('%')+keywords+str('%'))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_uni(cls, uni, title, keywords):
         sql_string = """
             SELECT uni, title, content, id, timePosted
             FROM Posts
             WHERE uni = %s 
-            OR LOWER(title) LIKE LOWER(%s)
-            OR LOWER(title) LIKE LOWER(%s)
-            OR LOWER(content) LIKE LOWER(%s)
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string,uni,title, keywords, keywords)
+            cursor = connection.execute(sql_string,uni)
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_title(cls,title):
+        sql_string = """
+            SELECT uni, title, content, id, timePosted
+            FROM Posts
+            WHERE LOWER(title) LIKE LOWER(%s)
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string,str('%')+title+str('%'))
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
@@ -108,8 +132,9 @@ class Post:
             IN (SELECT uni from temp)
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, name)
-            posts = cursor.fetchall()
+            cursor = connection.execute(sql_string, str('%')+name+str('%'))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
         if not posts:
             return None
         else:
@@ -130,8 +155,9 @@ class Post:
             IN (SELECT postId from temp)
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, company)
-            posts = cursor.fetchall()
+            cursor = connection.execute(sql_string, str('%')+company+str('%'))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
         if not posts:
             return None
         else:
@@ -153,8 +179,9 @@ class Post:
             IN (SELECT postId from temp)
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, keywords, keywords)
-            posts = cursor.fetchall()
+            cursor = connection.execute(sql_string, str('%')+keywords+str('%'), str('%')+keywords+str('%'))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
         if not posts:
             return None
         else:
