@@ -29,7 +29,7 @@ class Comment:
         self.time_posted = time_posted
 
     @classmethod
-    def find_all_comments(cls, post_id):
+    def fetchall(cls, post_id):
         sql_string = """
             SELECT r.commentId,
             c.postId, c.commentId, c.uni, c.content, c.timePosted

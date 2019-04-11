@@ -20,7 +20,7 @@ def index():
 @blueprint.route('/<post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
-    comments = Comment.find_all_comments(post_id)
+    comments = Comment.fetchall(post_id)
     if 'uni' in session:
         uni = session['uni']
     else:
