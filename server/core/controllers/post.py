@@ -7,16 +7,16 @@ from ..models.comment import Comment
 from .auth import login_required
 
 
-bluePrint = Blueprint('post', __name__, url_prefix='/post')
+blueprint = Blueprint('post', __name__, url_prefix='/post')
 
 
-@bluePrint.route('/', methods=['GET'])
+@blueprint.route('/', methods=['GET'])
 def index():
     posts = Post.fetchall()
     return render_template('post/index.html', posts=posts)
 
 
-@bluePrint.route('/<post_id>', methods=['GET'])
+@blueprint.route('/<post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
     comments = Comment.find_all_comments(post_id)
@@ -32,7 +32,7 @@ def detail(post_id):
         return render_template('error/404.html', message='Post Not Found.')
 
 
-@bluePrint.route('/add-post', methods=['GET', 'POST'])
+@blueprint.route('/add-post', methods=['GET', 'POST'])
 @login_required
 def add_post():
     if request.method == 'POST':
@@ -56,7 +56,7 @@ def add_post():
     return render_template('post/add-post.html', post=None)
 
 
-@bluePrint.route('/edit-post/<post_id>', methods=['GET', 'POST'])
+@blueprint.route('/edit-post/<post_id>', methods=['GET', 'POST'])
 @login_required
 def edit_post(post_id):
     post = Post.find_by_id(post_id)

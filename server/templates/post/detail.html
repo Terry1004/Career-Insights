@@ -8,30 +8,41 @@
     {% endif %}
     <ul>
         <li>Title: {{ post.title }}</li>
-        <li>UNI: {{ post.uni }}</li>
+        <li>Username: {{ post.user.username }}</li>
         <li>Time Posted: {{ post.time_posted }}</li>
-        <p>{{ post.content }}</p>
-        <p>Post Type: {{ post.tag.post_type }}</p>
-        <p>Rate: {{ post.tag.rate }}</p>
-        <p>Position: {{ post.tag.position }}</p>
-        <p>Company: {{ post.tag.company }}</p>
-        <p>Hashtags: 
+        <li>Content: {{ post.content }}</li>
+        <li>Post Type: {{ post.tag.post_type }}</li>
+        <li>Rate: {{ post.tag.rate }}</li>
+        <li>Position: {{ post.tag.position }}</li>
+        <li>Company: {{ post.tag.company }}</li>
+        <li>Hashtags: 
             <ul>
                 {% for hashtag in post.tag.hashtags %}
                     <li>{{ hashtag }}</li>
                 {% endfor %}
             </ul>
-        </p>
-        <p>Domain: {{ post.tag.domain }}</p>
+        </li>
+        <li>Domain: {{ post.tag.domain }}</li>
     </ul>
     <p>Comments: </p>
     <ul>
         {% for indent, reply in comments %}
         <div style="margin-left: {{ indent * 5 }}em">
-            <li>Uni: {{ reply.uni }}</li>
+            <li>Username: {{ reply.user.username }}</li>
             <li>Content: {{ reply.content }}</li>
             <li>Time Posted: {{ reply.time_posted }}</li>
+            <form action="/comment/add-comment" method="post">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                <textarea name="content" cols="10" rows="10"></textarea>
+                <input type="submit" value="Reply">
+            </form>
         </div>
         {% endfor %}
     </ul>
+    <form action="/comment/add-comment" method="POST">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <textarea name="content" cols="10" rows="10"></textarea>
+        <input type="submit" value="Comment">
+    </form>
 {% endblock %}

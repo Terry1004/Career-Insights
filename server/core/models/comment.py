@@ -1,5 +1,6 @@
 from collections import defaultdict
 from flask import current_app
+from .user import User
 
 
 def traverse(tree, curr, res, depth):
@@ -31,7 +32,7 @@ class Comment:
     def find_all_comments(cls, post_id):
         sql_string = """
             SELECT r.commentId,
-            c.postId, c.commentId, c.uni, c.timePosted, c.content
+            c.postId, c.commentId, c.uni, c.content, c.timePosted
             FROM Comments c LEFT JOIN Replies r
             ON c.postId = r.postId AND c.commentId = r.replyId
             WHERE c.postId = %s
@@ -48,3 +49,62 @@ class Comment:
         traverse(comment_tree, None, comments, -1)
         print(comment_tree)
         return comments
+
+    @classmethod
+    def get_max_id(cls, post_id):
+        sql_string = """
+            SELECT MAX(commentId)
+            FROM Comments
+            WHERE postId = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, post_id)
+            max_id = cursor.fetchone()[0]
+        return max_id
+
+    def save(self, comment_id=None, update=False):
+        insert_comment_string = """
+            INSERT INTO Comments (
+                postId, commentId, uni, content
+            ) VALUES (%s, %s, %s, %s)
+        """
+        insert_reply_string = """
+            INSERT INTO Replies (
+                postId, commentId, replyId
+            ) VALUES (%s, %s, %s)
+        """
+        update_comment_string = """
+            UPDATE Comments
+            SET content = %s
+        """
+        with current_app.database.begin() as connection:
+            if not update:
+                connection.execute(
+                    insert_comment_string,
+                    (self.post_id, self.id, self.uni, self.content)
+                )
+                if comment_id is not None:
+                    connection.execute(
+                        insert_reply_string,
+                        (self.post_id, comment_id, self.id)
+                    )
+            else:
+                connection.execute(
+                    update_comment_string,
+                    self.content
+                )
+
+    @property
+    def user(self):
+        sql_string = """
+            SELECT uni, password, email, personalDescription, username, major
+            FROM Users
+            WHERE Users.uni = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, self.uni)
+            user = cursor.fetchone()
+        if not user:
+            return None
+        else:
+            return User(*user, hash=False)

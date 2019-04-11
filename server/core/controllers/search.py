@@ -4,10 +4,10 @@ from flask import (
 from ..models.post import Post
 
 
-bluePrint = Blueprint('search', __name__, url_prefix='/search')
+blueprint = Blueprint('search', __name__, url_prefix='/search')
 
 
-@bluePrint.route('', methods=['GET','POST'])
+@blueprint.route('', methods=['GET', 'POST'])
 def detail():
     if request.method == 'GET':
         return render_template('search/search.html')
@@ -27,4 +27,6 @@ def detail():
         if all_posts:
             return render_template('post/index.html', post=all_posts)
         else:
-            return render_template('error/404.html', message='No Posts Found relevant to search')
+            return render_template(
+                'error/404.html', message='No Posts Found relevant to search'
+            )
