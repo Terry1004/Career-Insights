@@ -91,7 +91,7 @@ class Post:
         return posts
 
     @classmethod
-    def find_by_uni(cls, uni, title, keywords):
+    def find_by_uni(cls, uni):
         sql_string = """
             SELECT uni, title, content, id, timePosted
             FROM Posts
@@ -170,7 +170,7 @@ class Post:
             (
             SELECT postId 
             FROM Tags
-            WHERE hashtags LIKE %s
+            WHERE %s LIKE ANY (hashtags)
             OR domain LIKE %s
             )
             SELECT uni, title, content, id, timePosted
@@ -179,7 +179,7 @@ class Post:
             IN (SELECT postId from temp)
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, str('%')+keywords+str('%'), str('%')+keywords+str('%'))
+            cursor = connection.execute(sql_string, keywords, str('%')+keywords+str('%'))
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         if not posts:

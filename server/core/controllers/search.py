@@ -19,29 +19,36 @@ def detail():
         keywords = request.form['keywords']
         title = request.form['title']
 
+        print(uni)
+        print(type(name))
+        print(type(company))
+
+        if company == '':
+            print("yes")
+
         posts = []
-        if company is not None:
+        if company != '':
             post1 = Post.find_by_company(company)
-            if post1 is not None:
+            if post1:
                 posts.extend(post1)
-        if name is not None:
+        if name != '':
             post2 = Post.find_by_name(name)
-            if post2 is not None:
+            if post2:
                 posts.extend(post2)
-        if uni is not None:
+        if uni != '':
             post3 = Post.find_by_uni(uni)
-            if post3 is not None:
+            if post3:
                 posts.extend(post3)
-        if title is not None:
+        if title != '':
             post4 = Post.find_by_title(title)
-            if post4 is not None:
+            if post4:
                 posts.extend(post4)
-        if keywords is not None:
+        if keywords != '':
             post5 = Post.find_by_keywords(keywords)
-            if post5 is not None:
+            if post5:
                 posts.extend(post5)
 
-        if posts != None:
+        if posts:
             return render_template('post/index.html', posts=posts)
         else:
             return render_template('error/404.html', message='No Posts Found relevant to search')
