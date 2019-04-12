@@ -32,6 +32,9 @@
     <ul>
         {% for indent, reply in comments %}
         <div style="margin-left: {{ indent * 5 }}em">
+            <li>Username: {{ reply.user.username }}</li>
+            <li>Content: {{ reply.content }}</li>
+            <li>Time Posted: {{ reply.time_posted }}</li>
             {% if uni == reply.uni %}
             <form action="/comment/edit-comment" method="POST">
                 <input type="hidden" name="post_id" value="{{ post.id }}">
@@ -40,9 +43,6 @@
                 <input type="submit" value="Edit">
             </form>
             {% endif %}
-            <li>Username: {{ reply.user.username }}</li>
-            <li>Content: {{ reply.content }}</li>
-            <li>Time Posted: {{ reply.time_posted }}</li>
             <form action="/comment/add-comment" method="POST">
                 <input type="hidden" name="post_id" value="{{ post.id }}">
                 <input type="hidden" name="comment_id" value="{{ reply.id }}">
