@@ -74,6 +74,21 @@ class Comment:
             max_id = cursor.fetchone()[0]
         return max_id
 
+    @property
+    def user(self):
+        sql_string = """
+            SELECT uni, password, email, personalDescription, username, major
+            FROM Users
+            WHERE Users.uni = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, self.uni)
+            user = cursor.fetchone()
+        if not user:
+            return None
+        else:
+            return User(*user, hash=False)
+
     def save(self, comment_id=None, update=False):
         insert_comment_string = """
             INSERT INTO Comments (
@@ -107,17 +122,3 @@ class Comment:
                     (self.content, self.post_id, self.id)
                 )
 
-    @property
-    def user(self):
-        sql_string = """
-            SELECT uni, password, email, personalDescription, username, major
-            FROM Users
-            WHERE Users.uni = %s
-        """
-        with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, self.uni)
-            user = cursor.fetchone()
-        if not user:
-            return None
-        else:
-            return User(*user, hash=False)
