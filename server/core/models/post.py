@@ -49,7 +49,10 @@ class Post:
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string)
             max_id = cursor.fetchone()[0]
-        return max_id
+        if max_id is not None:
+            return max_id
+        else:
+            return 1
 
     @property
     def user(self):

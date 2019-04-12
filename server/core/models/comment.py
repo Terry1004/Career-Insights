@@ -72,7 +72,10 @@ class Comment:
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, post_id)
             max_id = cursor.fetchone()[0]
-        return max_id
+        if max_id is not None:
+            return max_id
+        else:
+            return 1
 
     @property
     def user(self):
@@ -122,3 +125,10 @@ class Comment:
                     (self.content, self.post_id, self.id)
                 )
 
+    def destroy(self):
+        sql_string = """
+            DELETE FROM Comments
+            WHERE postId = %s AND commentId = %s
+        """
+        with current_app.database.begin() as connection:
+            connection.execute(sql_string, (self.post_id, self.id))

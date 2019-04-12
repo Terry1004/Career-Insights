@@ -34,3 +34,15 @@ def edit_comment():
     comment.content = content
     comment.save(update=True)
     return redirect(url_for('post.detail', post_id=post_id))
+
+
+@blueprint.route('/delete-comment', methods=['POST'])
+@login_required
+def delete_comment():
+    post_id = request.form['post_id']
+    comment_id = request.form['comment_id']
+    comment = Comment.find_by_id(post_id, comment_id)
+    if comment.uni != session['uni']:
+        abort(403)
+    comment.destroy()
+    return redirect(url_for('post.detail', post_id=post_id))
