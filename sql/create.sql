@@ -27,7 +27,7 @@ CREATE TABLE Posts (
 CREATE TABLE Tags (
 	id SERIAL,
 	postId INT UNIQUE NOT NULL,
-	postType TEXT NOT NULL DEFAULT '',
+	postType TEXT NOT NULL,
 	rate INT,
 	position TEXT NOT NULL,
 	company TEXT NOT NULL DEFAULT '',
@@ -54,6 +54,6 @@ CREATE TABLE Replies (
 	replyId INT,
 	postId INT,
 	PRIMARY KEY (postId, commentId, replyId),
-	FOREIGN KEY (postId, commentId) REFERENCES Comments (postId, commentId),
-	FOREIGN KEY (postId, replyId) REFERENCES Comments (postId, commentId)
+	FOREIGN KEY (postId, commentId) REFERENCES Comments (postId, commentId) ON DELETE CASCADE,
+	FOREIGN KEY (postId, replyId) REFERENCES Comments (postId, commentId) ON DELETE CASCADE
 );
