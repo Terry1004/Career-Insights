@@ -77,3 +77,15 @@ def edit_post(post_id):
         tag.save(update=True)
         return redirect(url_for('post.detail', post_id=post_id))
     return render_template('post/add-post.html', post=post)
+
+
+@blueprint.route('/delete-post', methods=['POST'])
+@login_required
+def delete_post():
+    post_id = request.form['post_id']
+    post = Post.find_by_id(post_id)
+    if post.uni != session['uni']:
+        abort(403)
+    else:
+        post.destroy()
+        return redirect(url_for('post.index'))

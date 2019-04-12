@@ -20,6 +20,6 @@
         <input type="text" name="hashtags" value="{% if post %}{{ post.tag.hashtags_dis }}{% endif %}">
         <p>Domain: </p>
         <input type="text" name="domain" value="{% if post %}{{ post.tag.domain }}{% endif %}">
-        <input type="submit" value="Edit">
+        <input type="submit" value="{% if post %}Edit{% else %}Post{% endif %}">
     </form>
 {% endblock %}

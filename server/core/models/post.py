@@ -11,10 +11,6 @@ class Post:
         self.content = content
         self.id = post_id
         self.time_posted = time_posted
-        if not post_id:
-            self.tag = None
-        else:
-            self.tag = Tag.find_by_post_id(post_id)
 
     @classmethod
     def fetchall(cls):
@@ -70,6 +66,13 @@ class Post:
         else:
             return User(*user, hash=False)
 
+    @property
+    def tag(self):
+        if not self.id:
+            return None
+        else:
+            return Tag.find_by_post_id(self.id)
+
     def save(self, update=False):
         insert_string = """
             INSERT INTO Posts (
@@ -103,6 +106,19 @@ class Post:
                     update_string,
                     (self.title, self.content, self.id)
                 )
+
+    def destroy(self):
+        delete_tag_string = """
+            DELETE FROM Tags
+            WHERE postId = %s
+        """
+        delete_post_string = """
+            DELETE FROM Posts
+            WHERE id = %s
+        """
+        with current_app.database.begin() as connection:
+            connection.execute(delete_tag_string, self.id)
+            connection.execute(delete_post_string, self.id)
 
     @classmethod
     def find_from_posts(cls, uni, title, keywords):
