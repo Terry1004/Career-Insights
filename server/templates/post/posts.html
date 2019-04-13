@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block main %}
-    <a href="/post/add-post">New Post</a>
+    <a href="/post/add-post?post-type={{ post_type }}">New Post</a>
     <ul>
         {% for post in posts %}
             <li>

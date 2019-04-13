@@ -20,21 +20,21 @@ def index():
 def internship():
     post_type = 'Internship Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts)
+    return render_template('post/posts.html', posts=posts, post_type=post_type)
 
 
 @blueprint.route('/fulltime', methods=['GET'])
 def fulltime():
     post_type = 'Full-time Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts)
+    return render_template('post/posts.html', posts=posts, post_type=post_type)
 
 
 @blueprint.route('/interview', methods=['GET'])
 def interview():
     post_type = 'Interview Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts)
+    return render_template('post/posts.html', posts=posts, post_type=post_type)
 
 
 @blueprint.route('/<post_id>', methods=['GET'])
@@ -74,7 +74,10 @@ def add_post():
         post.save()
         tag.save()
         return redirect(url_for('post.detail', post_id=post_id))
-    return render_template('post/add-post.html', post=None)
+    post_type = request.args['post-type']
+    return render_template(
+        'post/add-post.html', post=None, post_type=post_type
+    )
 
 
 @blueprint.route('/edit-post/<post_id>', methods=['GET', 'POST'])
@@ -96,7 +99,9 @@ def edit_post(post_id):
         post.save(update=True)
         tag.save(update=True)
         return redirect(url_for('post.detail', post_id=post_id))
-    return render_template('post/add-post.html', post=post)
+    return render_template(
+        'post/add-post.html', post=post, post_type=tag.post_type
+    )
 
 
 @blueprint.route('/delete-post', methods=['POST'])

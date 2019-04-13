@@ -8,8 +8,7 @@
         <input type="text" name="title" value="{% if post %}{{ post.title }}{% endif %}">
         <p>Content: </p>
         <textarea name="content" cols="30" rows="10">{% if post %}{{ post.content }}{% endif %}</textarea>
-        <p>Post Type: </p>
-        <input type="text" name="post_type" value="{% if post %}{{ post.tag.post_type }}{% endif %}">
+        <input type="hidden" name="post_type" value="{{ post_type }}">
         <p>Rate: </p>
         <input type="number" name="rate" value="{% if post %}{{ post.tag.rate }}{% endif %}">
         <p>Position</p>
