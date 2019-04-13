@@ -34,6 +34,9 @@ CREATE TABLE Tags (
 	hashtags TEXT[] NOT NULL DEFAULT '{}',
 	domain TEXT NOT NULL DEFAULT '',
 	CHECK (rate BETWEEN 0 AND 5),
+	CHECK (postType IN (
+		'Internship Experience', 'Full-time Experience', 'Interview Experience'
+	)),
 	PRIMARY KEY (id),
 	FOREIGN KEY (postId) REFERENCES Posts
 );
