@@ -23,7 +23,7 @@ def detail():
         post1 = Post.find_by_company(company)
         post2 = Post.find_by_name(name)
         post3 = Post.find_from_posts(uni, title, keywords)
-        all_posts = post1+post2+post3
+        all_posts = post1 + post2 + post3
 
         if all_posts:
             return render_template('post/index.html', post=all_posts)
