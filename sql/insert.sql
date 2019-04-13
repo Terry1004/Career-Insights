@@ -220,7 +220,7 @@ INSERT INTO Tags (
 ),
 (
     10,
-    'Intenrship Experience',
+    'Internship Experience',
     4,
     'Research Assistant',
     'Columbia University',
