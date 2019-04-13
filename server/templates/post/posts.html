@@ -1,0 +1,26 @@
+{% extends "layout/default.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block main %}
+    <a href="/post/add-post">New Post</a>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <ul>
+                    
+                    <li>UNI: {{ post.uni }}</li>
+                    <li><a href="/post/{{ post.id }}">Title: {{ post.title }}</a></li>
+                    <li>Time Posted: {{ post.time_posted }}</li>
+                    {% if post.user %}
+                        <li>User Name: {{ post.user.username }}</li>
+                        <li>User Email: {{ post.user.email }}</li>
+                        <li>User Major: {{ post.user.major }}</li>
+                    {% else %}
+                        <p>User Deleted.</p>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

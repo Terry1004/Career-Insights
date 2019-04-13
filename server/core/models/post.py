@@ -13,14 +13,16 @@ class Post:
         self.time_posted = time_posted
 
     @classmethod
-    def fetchall(cls):
+    def fetchall(cls, post_type):
         sql_string = """
-            SELECT uni, title, content, id, timePosted
-            FROM Posts
+            SELECT p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN Tags t
+            ON p.id = t.postId
+            WHERE t.postType = %s
             ORDER BY timePosted DESC
         """
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string)
+            cursor = connection.execute(sql_string, post_type)
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
@@ -100,7 +102,10 @@ class Post:
     #         IN (SELECT postId from temp)
     #     """
     #     with current_app.database.begin() as connection:
-    #         cursor = connection.execute(sql_string, keywords, str('%')+keywords+str('%'))
+    #         cursor = connection.execute(
+    #             sql_string,
+    #             keywords, str('%')+keywords+str('%')
+    #     )
     #         posts_raw = cursor.fetchall()
     #         posts = [cls(*post_raw) for post_raw in posts_raw]
     #     if not posts:

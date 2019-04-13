@@ -13,8 +13,28 @@ blueprint = Blueprint('post', __name__, url_prefix='/post')
 
 @blueprint.route('/', methods=['GET'])
 def index():
-    posts = Post.fetchall()
-    return render_template('post/index.html', posts=posts)
+    return render_template('post/index.html')
+
+
+@blueprint.route('/internship', methods=['GET'])
+def internship():
+    post_type = 'Internship Experience'
+    posts = Post.fetchall(post_type)
+    return render_template('post/posts.html', posts=posts)
+
+
+@blueprint.route('/fulltime', methods=['GET'])
+def fulltime():
+    post_type = 'Full-time Experience'
+    posts = Post.fetchall(post_type)
+    return render_template('post/posts.html', posts=posts)
+
+
+@blueprint.route('/interview', methods=['GET'])
+def interview():
+    post_type = 'Interview Experience'
+    posts = Post.fetchall(post_type)
+    return render_template('post/posts.html', posts=posts)
 
 
 @blueprint.route('/<post_id>', methods=['GET'])
