@@ -5,16 +5,12 @@
 {% block main %}
     <h1>Search</h1>
     <form action="/search" method="POST">
-        <p>UNI: </p>
-        <input type="text" name="uni">
         <p>Name: </p>
         <input type="text" name="name">
         <p>Company: </p>
         <input type="text" name="company">
         <p>Title: </p>
         <input type="text" name="title">
-        <p>Keywords: </p>
-        <input type="text" name="keywords">
         <input type="submit" value="Search">
     </form>
 {% endblock %}

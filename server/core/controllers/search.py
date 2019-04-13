@@ -10,22 +10,19 @@ blueprint = Blueprint('search', __name__, url_prefix='/search')
 
 @blueprint.route('', methods=['GET', 'POST'])
 def detail():
-    if request.method == 'GET':
-        return render_template('search/search.html')
-
     if request.method == 'POST':
-        uni = request.args.get('uni')
-        name = request.args.get('name')
-        company = request.args.get('company')
-        keywords = request.args.get('keywords')
-        title = request.args.get('title')
-
-        post1 = Post.find_by_company(company)
-        post2 = Post.find_by_name(name)
-        post3 = Post.find_from_posts(uni, title, keywords)
-        all_posts = post1 + post2 + post3
-
-        if all_posts:
-            return render_template('post/index.html', post=all_posts)
-        else:
-            abort(404)
+        name = request.form['name']
+        company = request.form['company']
+        title = request.form['title']
+        posts1, posts2, posts3 = [], [], []
+        if name:
+            posts1 = Post.find_by_name(name)
+        if company:
+            posts2 = Post.find_by_company(company)
+        if title:
+            posts3 = Post.find_by_title(title)
+        return render_template(
+            'post/index.html',
+            posts=posts1 + posts2 + posts3
+        )
+    return render_template('search/search.html')

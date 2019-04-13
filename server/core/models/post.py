@@ -41,6 +41,74 @@ class Post:
             return cls(*post)
 
     @classmethod
+    def find_by_title(cls, title):
+        sql_string = """
+            SELECT uni, title, content, id, timePosted
+            FROM Posts
+            WHERE LOWER(title) LIKE %s
+        """
+        title = title.lower().replace('_', r'\_').replace('%', r'\%')
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, '%{}%'.format(title))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_name(cls, name):
+        sql_string = """
+            SELECT p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN Users u
+            ON p.uni = u.uni
+            WHERE LOWER(u.userName) LIKE %s
+        """
+        name = name.lower().replace('_', r'\_').replace('%', r'\%')
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, '%{}%'.format(name))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_company(cls, company):
+        sql_string = """
+            SELECT p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN Tags t
+            ON p.id = t.postId
+            WHERE LOWER(t.company) LIKE %s
+        """
+        company = company.lower().replace('_', r'\_').replace('%', r'\%')
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, '%{}%'.format(company))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    # @classmethod
+    # def find_by_keywords(cls, keywords):
+    #     sql_string = """
+    #         WITH temp AS
+    #         (
+    #         SELECT postId
+    #         FROM Tags
+    #         WHERE %s LIKE ANY (hashtags)
+    #         OR domain LIKE %s
+    #         )
+    #         SELECT uni, title, content, id, timePosted
+    #         FROM Posts
+    #         WHERE id
+    #         IN (SELECT postId from temp)
+    #     """
+    #     with current_app.database.begin() as connection:
+    #         cursor = connection.execute(sql_string, keywords, str('%')+keywords+str('%'))
+    #         posts_raw = cursor.fetchall()
+    #         posts = [cls(*post_raw) for post_raw in posts_raw]
+    #     if not posts:
+    #         return None
+    #     else:
+    #         return posts
+
+    @classmethod
     def get_max_id(cls):
         sql_string = """
             SELECT MAX(id)
@@ -122,86 +190,3 @@ class Post:
         with current_app.database.begin() as connection:
             connection.execute(delete_tag_string, self.id)
             connection.execute(delete_post_string, self.id)
-
-    @classmethod
-    def find_from_posts(cls, uni, title, keywords):
-        sql_string = """
-            SELECT uni, title, content, id, timePosted
-            FROM Posts
-            WHERE uni = %s
-            OR title LIKE %s
-            OR title LIKE %s
-            OR content LIKE %s
-        """
-        with current_app.database.begin() as connection:
-            cursor = connection.execute(
-                sql_string,
-                (uni, title, keywords, keywords)
-            )
-            posts_raw = cursor.fetchall()
-            posts = [cls(*post_raw) for post_raw in posts_raw]
-        return posts
-
-    @classmethod
-    def find_by_name(cls, name):
-        sql_string = """
-            WITH temp AS
-            (
-            SELECT uni
-            FROM Users
-            WHERE userName LIKE %s
-            )
-            SELECT uni, title, content, id, timePosted
-            FROM Posts
-            WHERE uni in temp.uni
-        """
-        with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, name)
-            posts = cursor.fetchall()
-        if not posts:
-            return None
-        else:
-            return posts
-
-    @classmethod
-    def find_by_company(cls, company):
-        sql_string = """
-            WITH temp AS
-            (
-            SELECT postId
-            FROM Tags
-            WHERE company LIKE %s
-            )
-            SELECT uni, title, content, id, timePosted
-            FROM Posts
-            WHERE id in temp.postId
-        """
-        with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, company)
-            posts = cursor.fetchall()
-        if not posts:
-            return None
-        else:
-            return posts
-
-    @classmethod
-    def find_by_keywords(cls, keywords):
-        sql_string = """
-            WITH temp AS
-            (
-            SELECT postId
-            FROM Tags
-            WHERE hashtags LIKE %s
-            OR domain LIKE %s
-            )
-            SELECT uni, title, content, id, timePosted
-            FROM Posts
-            WHERE id in temp.postId
-        """
-        with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, keywords, keywords)
-            posts = cursor.fetchall()
-        if not posts:
-            return None
-        else:
-            return posts
