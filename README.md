@@ -27,13 +27,13 @@ This is the W4111 database course project. We would like to develop a web server
     ```
 ## Screenshots
 <div float="left">
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot1.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot2.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot3.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot4.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot5.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot6.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot7.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot8.png?raw=true" width="33.33%"/>
-  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot9.png?raw=true" width="33.33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot1.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot2.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot3.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot4.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot5.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot6.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot7.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot8.png?raw=true" width="33%"/>
+  <img src="https://github.com/Terry1004/Career-Insights/blob/master/screenshots/flask-screenshot9.png?raw=true" width="33%"/>
 </div>
