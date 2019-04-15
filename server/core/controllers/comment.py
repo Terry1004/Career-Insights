@@ -14,12 +14,19 @@ blueprint = Blueprint('comment', __name__, url_prefix='/comment')
 def add_comment():
     uni = session['uni']
     post_id = request.form['post_id']
-    content = request.form['content']
+    content = request.form['content'].strip()
     comment_id = request.form.get('comment_id', None)
-    reply_id = Comment.get_max_id(post_id) + 1
-    comment = Comment(post_id, reply_id, uni, content)
-    comment.save(comment_id=comment_id)
-    return redirect(url_for('post.detail', post_id=post_id))
+    error = False
+    if not content:
+        flash('Content is required.')
+        error = True
+    if error:
+        return redirect(url_for('post.detail', post_id=post_id))
+    else:
+        reply_id = Comment.get_max_id(post_id) + 1
+        comment = Comment(post_id, reply_id, uni, content)
+        comment.save(comment_id=comment_id)
+        return redirect(url_for('post.detail', post_id=post_id))
 
 
 @blueprint.route('/edit-comment', methods=['POST'])

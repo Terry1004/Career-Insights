@@ -59,7 +59,7 @@
                 {% endif %}
             </ul>
         </div>
-        <div class="large12 columns">
+        <div class="large-12 columns">
             <div class="fl">
                 <div class="action-icon left-first">
                     <button id="comment-form-displayer">
@@ -92,8 +92,11 @@
                 </div>
             </div>
         </div>
+        <div class="large-12 columns form-error-wrapper">
+            {% include "includes/form-error.html" %}
+        </div>
         <div class="large-12 columns comment-form" id="comment-form-wrapper">
-            <form action="/comment/add-comment" method="POST" style="margin-top: 2rem;">
+            <form action="/comment/add-comment" method="POST">
                 <input type="hidden" name="post_id" value="{{ post.id }}">
                 <textarea name="content" placeholder="Add your comment..."></textarea>
                 <div class="fr">
