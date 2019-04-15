@@ -9,7 +9,7 @@ CREATE TABLE Users (
 	password TEXT NOT NULL,
 	email TEXT NOT NULL,
 	personalDescription TEXT NOT NULL DEFAULT '',
-    userName TEXT NOT NULL DEFAULT '',
+    userName TEXT NOT NULL,
 	major TEXT NOT NULL DEFAULT '',
 	PRIMARY KEY (uni)
 );
@@ -28,12 +28,12 @@ CREATE TABLE Tags (
 	id SERIAL,
 	postId INT UNIQUE NOT NULL,
 	postType TEXT NOT NULL,
-	rate INT,
+	rate INT NOT NULL,
 	position TEXT NOT NULL,
-	company TEXT NOT NULL DEFAULT '',
+	company TEXT NOT NULL,
 	hashtags TEXT[] NOT NULL DEFAULT '{}',
 	domain TEXT NOT NULL DEFAULT '',
-	CHECK (rate BETWEEN 0 AND 5),
+	CHECK (rate BETWEEN 1 AND 5),
 	CHECK (postType IN (
 		'Internship Experience', 'Full-time Experience', 'Interview Experience'
 	)),
