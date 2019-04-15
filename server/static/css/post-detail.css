@@ -130,13 +130,6 @@
     color: inherit;
     border-bottom: 2px solid hsl(0, 0%, 70%);
 }
-.comment-form textarea:focus,
-.reply-form textarea:focus {
-    outline: none;
-    box-shadow: none;
-    background: inherit;
-    border-bottom: 2px solid hsl(195, 73%, 58%);
-}
 .comment-wrapper {
     padding-top: 0.5rem;
 }
@@ -160,6 +153,10 @@
     padding-top: 1rem;
     padding-left: 5rem;
 }
+.edit-reply-form {
+    display: none;
+    padding-top: 1rem;
+}
 .reply-form textarea,
 .edit-reply-form textarea {
     resize: none;
@@ -171,7 +168,11 @@
     border: none;
     border-bottom: 2px solid hsl(0, 0%, 70%);
 }
-.edit-reply-form {
-    display: none;
-    padding-top: 1rem;
+.comment-form textarea:focus,
+.reply-form textarea:focus,
+.edit-reply-form textarea:focus {
+    outline: none;
+    box-shadow: none;
+    background: inherit;
+    border-bottom: 2px solid hsl(195, 73%, 58%);
 }

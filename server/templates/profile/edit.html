@@ -11,6 +11,7 @@
             <div class="form-title">
                 <h1>Profile</h1>
             </div>
+            {% include "includes/form-error.html" %}
             <form action="/profile/edit" method="POST">
                 <div class="form-item">
                     <input type="text" name="email" value="{{ user.email }}" placeholder="Email"/>

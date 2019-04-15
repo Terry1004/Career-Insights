@@ -1,3 +1,4 @@
+import re
 from flask import (
     Blueprint, redirect, render_template,
     request, flash, session, url_for, abort
@@ -50,10 +51,17 @@ def edit():
         user.username = request.form['username']
         user.major = request.form['major']
         error = False
-        if not error:
+        if not user.email:
+            flash('Email is required.')
+            error = True
+        elif not re.fullmatch(r'[^@]*@[^@]*', user.email):
+            flash('Invalid email address.')
+            error = True
+        if error:
+            return redirect('')
+        else:
             user.save(update=True)
             return redirect(url_for('profile.index'))
-        flash(error)
     return render_template(
         'profile/edit.html', user=user,
         path=[

@@ -6,6 +6,10 @@
     width: 70%;
     padding-bottom: 5px;
 }
+.userinfo-wrapper {
+    border-bottom: 2px solid hsl(0, 0%, 70%);
+    padding-bottom: 1rem;
+}
 .userinfo {
     margin-bottom: 0.5rem;
 }
@@ -28,12 +32,15 @@
     margin-left: 0.5rem;
 }
 .user-bio {
-    margin-top: 3.5rem;
+    margin-top: 1rem;
     padding-top: 0.5rem;
     border-top: 2px solid hsl(0, 0%, 70%);
 }
 .user-bio p {
     margin-bottom: 0;
+}
+.user-stats-wrapper {
+    padding-top: 1rem;
 }
 .user-stats {
     padding: 0.5rem;
@@ -42,5 +49,5 @@
     font-size: 20px;
 }
 .user-stats-left {
-    border-right: 2px solid hsl(0, 0%, 70%)
+    border-right: 2px solid hsl(0, 0%, 70%);
 }

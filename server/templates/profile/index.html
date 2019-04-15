@@ -9,42 +9,48 @@
     <div class="row mt mb">
         <h1 class="profile-title">Profile</h1>
         <div class="lpad lborder profile-wrapper ">
-            <div class="userinfo username">
-                <span>{{ user.username }}</span>
-                {% if uni == user.uni %}
-                    <div class="fr">
-                        <div class="action-icon">
-                            <a href="/profile/edit">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <span>edit</span>
-                            </a>
+            <div class="userinfo-wrapper">
+                <div class="userinfo username">
+                    <span>{{ user.username }}</span>
+                    {% if uni == user.uni %}
+                        <div class="fr">
+                            <div class="action-icon">
+                                <a href="/profile/edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                    <span>edit</span>
+                                </a>
+                            </div>
+                            <div class="action-icon">
+                                <a href="/auth/change-password">
+                                    <i class="fa fa-cog"></i>
+                                    <span>change password</span>
+                                </a>
+                            </div>
                         </div>
-                        <div class="action-icon">
-                            <a href="/auth/change-password">
-                                <i class="fa fa-cog"></i>
-                                <span>change password</span>
-                            </a>
-                        </div>
+                    {% endif %}
+                </div>
+                {% if user.major %}
+                    <div class="userinfo user-major">
+                        <i class="fa fa-book"></i>
+                        <span>{{ user.major }}</span>
                     </div>
                 {% endif %}
+                <div class="userinfo user-uni">
+                    <i class="fa fa-id-card"></i> 
+                    <span>{{ user.uni }}</span>
+                </div>
+                <div class="userinfo user-email">
+                    <i class="fa fa-envelope"></i>
+                    <span>{{ user.email }}</span>
+                </div>
             </div>
-            <div class="userinfo user-major">
-                <i class="fa fa-book"></i>
-                <span>{{ user.major }}</span>
-            </div>
-            <div class="userinfo user-uni">
-                <i class="fa fa-id-card"></i> 
-                <span>{{ user.uni }}</span>
-            </div>
-            <div class="userinfo user-email">
-                <i class="fa fa-envelope"></i>
-                <span>{{ user.email }}</span>
-            </div>
-            <div class="large-6 columns user-stats user-stats-left">
-                Posts {{ user.num_posts }}
-            </div>
-            <div class="large-6 columns user-stats user-stats-right">
-                Comments {{ user.num_comments }}
+            <div class="row user-stats-wrapper">
+                <div class="large-6 columns user-stats user-stats-left">
+                    Posts {{ user.num_posts }}
+                </div>
+                <div class="large-6 columns user-stats user-stats-right">
+                    Comments {{ user.num_comments }}
+                </div>
             </div>
             <div class="userinfo user-bio">
                 <p>{{ user.personal_des }}</p>

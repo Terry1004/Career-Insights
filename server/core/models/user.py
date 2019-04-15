@@ -33,6 +33,21 @@ class User:
         else:
             return cls(*user, hash=False)
 
+    @classmethod
+    def find_by_email(cls, email):
+        sql_string = """
+            SELECT uni, password, email, personalDescription, username, major
+            FROM users
+            WHERE email = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, email)
+            user = cursor.fetchone()
+        if not user:
+            return None
+        else:
+            return cls(*user, hash=False)
+
     @property
     def num_posts(self):
         sql_string = """

@@ -1,3 +1,4 @@
+import re
 from functools import wraps
 
 from flask import (
@@ -45,19 +46,26 @@ def register():
         if not email:
             flash('Email is required.')
             error = True
+        elif not re.fullmatch(r'[^@]*@[^@]*', email):
+            flash('Invalid email address.')
+            error = True
         if not username:
             flash('Username is required.')
             error = True
         if not error:
             user = User.find_by_uni(uni)
-            if not user:
+            user_email = User.find_by_email(email)
+            if user:
+                flash('This UNI has already been registered.')
+                error = True
+            elif user_email:
+                flash('This email has already been registered.')
+                error = True
+            else:
                 user = User(
                     uni, password, email, personal_des, username, major
                 )
                 user.save()
-            else:
-                flash('This UNI has already been registered.')
-                error = True
         if error:
             return redirect('')
         else:
