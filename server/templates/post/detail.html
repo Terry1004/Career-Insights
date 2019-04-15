@@ -17,9 +17,9 @@
             <span>{{ post.title }}</span>
         </div>
         <div class="large-12 columns">
-            <span class="post-info">Posted by 
-                <a href="/profile/view/{{ post.user.uni }}">{{ post.user.username }}</a> 
-                on {{ post.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
+            <span class="post-info">
+                Posted by<a href="/profile/view/{{ post.uni }}">{{ post.user.username }}</a>
+                {{ post.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
             </span>
         </div>
         <div class="large-12 columns company-info">
@@ -125,7 +125,7 @@
             {% for indent, reply in comments %}
                 <div class="comment lborder" style="margin-left: {{ indent * 5 }}em">
                     <span class="reply-info">
-                        <a href="/profile/view/{{ reply.user.uni }}">{{ reply.user.username }}</a> 
+                        <a href="/profile/view/{{ reply.user.uni }}">{{ reply.user.username }}</a>
                         Posted on {{ reply.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
                     </span>
                     <p class="reply-content">{{ reply.content }}</p>

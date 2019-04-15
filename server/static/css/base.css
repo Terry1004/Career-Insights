@@ -295,6 +295,7 @@ a.underline:hover:after {
 }
 .action-icon form {
     margin: 0;
+    display: inline;
 }
 .action-icon span {
     font-size: 12px;

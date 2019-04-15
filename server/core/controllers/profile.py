@@ -29,6 +29,8 @@ def index():
 def view(uni):
     user = User.find_by_uni(uni)
     uni = session['uni']
+    if not user:
+        abort(404)
     if user.uni == uni:
         return redirect(url_for('profile.index'))
     elif user:
