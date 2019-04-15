@@ -129,7 +129,7 @@ a.underline:hover:after {
 
     color: hsl(0, 0%, 100%);
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     text-shadow: 0 1px 1px hsl(195, 73%, 40%);
 }
 .forum-category > .column:nth-child(n + 2) {
@@ -142,7 +142,7 @@ a.underline:hover:after {
 
     color: hsl(0, 0%, 100%);
     font-weight: 300;
-    font-size: 12px;
+    font-size: 14px;
     text-shadow: 0 1px 1px hsl(0, 0%, 0%);
     text-align: center;
 }
@@ -154,12 +154,12 @@ a.underline:hover:after {
     border-right: none;
 }
 .forum-topic > .column {
-    min-height: 71px;
-    max-height: 71px;
+    min-height: 80px;
+    max-height: 80px;
     background-color: hsl(0, 0%, 96%);
     border-bottom: 1px solid hsl(0, 0%, 90%);
     color: hsl(0, 0%, 50%);
-    font-size: 12px;
+    font-size: 14px;
 }
 .forum-topic > .column:nth-child(n + 2) {
     text-align: center;
@@ -297,7 +297,7 @@ a.underline:hover:after {
     margin: 0;
 }
 .action-icon span {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: initial;
 }
 .action-icon button {
