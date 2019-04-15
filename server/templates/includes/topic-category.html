@@ -1,0 +1,25 @@
+<div class="large-12 forum-category rounded top">
+    <div class="large-8 small-4 column lpad">
+        {{ post_type }}
+    </div>
+    {% if index %}
+        <div class="large-2 small-4 column lpad">
+            <a href="/post/add-post?post-type={{ post_type }}">
+                <i class="fa fa-plus"></i> New Post
+            </a>
+        </div>
+        <div class="large-2 small-4 column lpad">
+            <a href="/post/{{ post_type }}">
+                <span>More</span>
+                <i class="fa fa-caret-square-o-right"></i>
+            </a>
+        </div>
+    {% else %}
+        <div class="large-2 small-4 column"></div>
+        <div class="large-2 small-4 column lpad">
+            <a href="/post/add-post?post-type={{ post_type }}">
+                <i class="fa fa-plus"></i> New Post
+            </a>
+        </div>
+    {% endif %}
+</div>

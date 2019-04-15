@@ -2,38 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
 </head>
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="/auth/register">Register</a>
-            </li>
-            <li>
-                <a href="/auth/login">Login</a>
-            </li>
-            <li>
-                <a href="/auth/logout">Logout</a>
-            </li>
-            <li>
-                <a href="/profile">Profile</a>
-            </li>
-            <li>
-                <a href="/search">Search</a>
-            </li>
-            <li>
-                <a href="/">Home</a>
-            </li>
-        </ul>
-    </nav>
+    <header id="#top">
+        <div class="row">
+            <div class="large-4 column lpad">
+                <div class="logo">
+                    <span>Career</span>
+                    <span>Insights</span>
+                </div>
+            </div>
+            <div class="large-8 column ar lpad">
+                <nav class="menu">
+                    <a href="/" {% if curr_tab == 'Forum' %}class="current"{% endif %}>Forum</a>
+                    <a href="/profile" {% if curr_tab == 'Profile' %}class="current"{% endif %}>Profile</a>
+                    <a href="/search" {% if curr_tab == 'Search' %}class="current"{% endif %}>Search</a>
+                    <a href="/auth/login" {% if curr_tab == 'Sign In' %}class="current"{% endif %}>Sign In</a>
+                    <a href="/auth/register" {% if curr_tab == 'Sign Up' %}class="current"{% endif %}>Sign Up</a>
+                    {% if 'uni' in session %}
+                        <a href="/auth/logout">Sign Out</a>
+                    {% endif %}
+                </nav>     
+            </div>
+        </div>
+    </header>
+    <a href="#top" id="top-button">
+        <i class="icon-angle-up"></i>
+    </a>
+        <div class="row">
+            <div class="large-6 column lpad top-msg breadcrumb">
+                <span id="breadcrumb">
+                <a href="/"><i class="fa fa-home"></i></a>
+                {% for dir, dir_name in path %}
+                    <a href="{{ dir }}">{{ dir_name }}</a>
+                {% endfor %}
+                </span>
+            </div> 
+            <div class="large-6 small-12 column lpad top-msg ar">
+                Welcome,
+                {% if 'uni' in session %}
+                    <a href="/profile/view/{{ session['uni'] }}" class="underline">{{ session['username'] }}</a>
+                {% else %}
+                    <a href="/auth/login" class="underline">Sign In</a>
+                {% endif %}
+            </div>
+        </div> 
     <main>
-        {% for message in get_flashed_messages() %}
-            <div>{{ message }}</div>
-        {% endfor %}
         {% block main %}{% endblock %}
     </main>
 </body>

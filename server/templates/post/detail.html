@@ -1,64 +1,149 @@
-{% extends "layout/default.html" %}
+{% extends "layout/base.html" %}
 
-{% block title %}Post Detail{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post-detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+{% endblock %}
 
 {% block main %}
-    {% if uni == post.uni %}
-        <a href="/post/edit-post/{{ post.id }}">Edit</a>
-        <form action="/post/delete-post" method="POST">
-            <input type="hidden" name="post_id" value="{{ post.id }}">
-            <input type="submit" value="Delete">
-        </form>
-    {% endif %}
-    <ul>
-        <li>Title: {{ post.title }}</li>
-        <li>Username: {{ post.user.username }}</li>
-        <li>Time Posted: {{ post.time_posted }}</li>
-        <li>Content: {{ post.content }}</li>
-        <li>Rate: {{ post.tag.rate }}</li>
-        <li>Position: {{ post.tag.position }}</li>
-        <li>Company: {{ post.tag.company }}</li>
-        <li>Hashtags: 
-            <ul>
-                {% for hashtag in post.tag.hashtags %}
-                    <li>{{ hashtag }}</li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li>Domain: {{ post.tag.domain }}</li>
-    </ul>
-    <p>Comments: </p>
-    <ul>
-        {% for indent, reply in comments %}
-        <div style="margin-left: {{ indent * 5 }}em">
-            <li>Username: {{ reply.user.username }}</li>
-            <li>Content: {{ reply.content }}</li>
-            <li>Time Posted: {{ reply.time_posted }}</li>
-            {% if uni == reply.uni %}
-            <form action="/comment/edit-comment" method="POST">
-                <input type="hidden" name="post_id" value="{{ post.id }}">
-                <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                <textarea name="content" cols="50" rows="1"></textarea>
-                <input type="submit" value="Edit">
-            </form>
-            <form action="/comment/delete-comment" method="POST">
-                <input type="hidden" name="post_id" value="{{ post.id }}">
-                <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                <input type="submit" value="Delete">
-            </form>
-            {% endif %}
-            <form action="/comment/add-comment" method="POST">
-                <input type="hidden" name="post_id" value="{{ post.id }}">
-                <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                <textarea name="content" cols="50" rows="1"></textarea>
-                <input type="submit" value="Reply">
-            </form>
+    <div class="row mt lpad">
+        <div class="large-12 columns post-title">
+            <span>{{ post.title }}</span>
         </div>
-        {% endfor %}
-    </ul>
-    <form action="/comment/add-comment" method="POST">
-        <input type="hidden" name="post_id" value="{{ post.id }}">
-        <textarea name="content" cols="50" rows="1"></textarea>
-        <input type="submit" value="Comment">
-    </form>
+        <div class="large-12 columns">
+            <span class="post-info">Posted by 
+                <a href="/profile/view/{{ post.user.uni }}">{{ post.user.username }}</a> 
+                on {{ post.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
+            </span>
+        </div>
+        <div class="large-12 columns company-info">
+            <span>Company: {{ post.tag.company }}</span>
+        </div>
+        <div class="large-12 columns company-info">
+            <span>Position: {{ post.tag.position }}</span>
+        </div>
+        <div class="large-12 columns company-info">
+            Rating: <div class="star-rating">
+                <div class="back-stars">
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    <div class="front-stars rate-{{ post.tag.rate }}">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="large-12 columns post-content">
+            <p>{{ post.content }}</p>
+        </div>
+        <div class="large-12 columns">
+            <ul class="tags">
+                {% for hashtag in post.tag.hashtags %}
+                    <li class="tag">{{ hashtag }}</li>
+                {% endfor %}
+                {% if post.tag.domain %}
+                    <li class="tag">{{ post.tag.domain.lower().replace(' ', '') }}</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="large12 columns">
+            <div class="fl">
+                <div class="action-icon left-first">
+                    <a href="#">
+                        <i class="fa fa-comments"></i>
+                        <span>comment</span>
+                    </a>
+                </div>
+                <div class="action-icon">
+                    {% if uni == post.uni %}
+                        <a href="/post/edit-post/{{ post.id }}">
+                            <i class="fa fa-pencil-square-o"></i>
+                            <span>edit</span>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="action-icon">
+                    {% if uni == post.uni %}
+                    <form action="/post/delete-post" method="POST" class="icon-form">
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        <button type="submit">
+                            <a>
+                                <i class="fa fa-trash"></i>
+                                <span>delete</span>
+                            </a>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb lpad">
+        <div class="large-12 columns">
+            {% for indent, reply in comments %}
+                <div class="comment lborder" style="margin-left: {{ indent * 5 }}em">
+                    <span class="reply-info">
+                        <a href="/profile/view/{{ reply.user.uni }}">{{ reply.user.username }}</a> 
+                        Posted on {{ reply.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
+                    </span>
+                    <p class="reply-content">{{ reply.content }}</p>
+                    <div class="fr">
+                        <div class="action-icon">
+                            <button>
+                                <i class="fa fa-comments"></i>
+                                <span>reply</span>
+                            </button>
+                        </div>
+                        {% if uni == reply.uni %}
+                        <!-- <form action="/comment/edit-comment" method="POST">
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                            <textarea name="content" cols="50" rows="1"></textarea>
+                            <input type="submit" value="Edit">
+                        </form> -->
+                        <div class="action-icon">
+                            <button>
+                                <a>
+                                    <i class="fa fa-pencil-square-o"></i>
+                                    <span>edit</span>
+                                </a>
+                            </button>
+                        </div>
+                        <div class="action-icon">
+                            <form action="/comment/delete-comment" method="POST">
+                                <input type="hidden" name="post_id" value="{{ post.id }}">
+                                <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                                <button type="submit">
+                                    <a>
+                                        <i class="fa fa-trash"></i>
+                                        <span>delete</span>
+                                    </a>
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        <!-- <form action="/comment/add-comment" method="POST">
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                            <textarea name="content" cols="50" rows="1"></textarea>
+                            <input type="submit" value="Reply">
+                        </form> -->
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- <form action="/comment/add-comment" method="POST" style="margin-top: 2rem;">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <textarea name="content" cols="50" rows="1"></textarea>
+                <input type="submit" value="Comment">
+            </form> -->
+        </div>
+    </div>
 {% endblock %}

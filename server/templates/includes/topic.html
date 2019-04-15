@@ -1,0 +1,21 @@
+<div class="large-12 forum-topic">
+    <div class="large-8 small-8 column lpad">
+        <span class="overflow-control">
+            <a href="/post/{{ post.id }}">{{ post.title }}</a>
+        </span>
+        <span class="overflow-control">
+            {{ post.content }}
+        </span>
+    </div>
+    <div class="large-2 column lpad">
+        <span class="center">{{ post.num_comments }}</span>
+    </div>
+    <div class="large-2 small-4 column pad">
+        {% if post.last_comment %}
+            <span>
+                {{ post.last_comment.time_posted.strftime('%m-%d-%Y %I:%M%p') }}
+            </span>
+            <span>by <a href="/profile/view/{{ post.last_comment.user.uni }}">{{ post.last_comment.user.username}}</a></span>
+        {% endif %}
+    </div>
+</div>

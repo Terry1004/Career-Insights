@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% block title %}Search Result{% endblock %}
+
+{% block main %}
+    <div class="row mt mb">
+            {% if posts %}
+                <h1>Related Posts:</h1>
+                <div class="large-12">
+                    {% include "includes/topic-header.html" %}
+                    {% for post in posts %} 
+                        {% include "includes/topic.html" %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h1>No Related Posts Found.</h1>
+            {% endif %}
+        </div>
+{% endblock %}

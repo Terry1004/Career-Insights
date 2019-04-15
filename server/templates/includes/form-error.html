@@ -1,0 +1,5 @@
+<div class="form-error">
+    {% for message in get_flashed_messages() %}
+        <span>* {{ message }}</span>
+    {% endfor %}
+</div>

@@ -1,14 +1,32 @@
-{% extends "layout/default.html" %}
+{% extends "layout/base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign In{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+{% endblock %}
 
 {% block main %}
-    <h1>Login</h1>
-    <form action="/auth/login" method="POST">
-        <p>UNI: </p>
-        <input type="text" name="uni">
-        <p>Password: </p>
-        <input type="password" name="password">
-        <input type="submit" value="Login">
-    </form>
+    <div class="row mt mb lpad">
+        <div class="form-wrapper">
+            <div class="form-title">
+                <h1>Welcome</h1>
+            </div>
+            {% include "includes/form-error.html" %}
+            <form action="/auth/login" method="POST">
+                <div class="form-item">
+                    <input type="text" name="uni" placeholder="UNI">
+                </div>
+                <div class="form-item">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="button-panel">
+                    <input type="submit" class="button" value="Sign In">
+                </div>
+            </form>
+            <div class="form-footer">
+                <p><a href="/auth/register">Create an account</a></p>
+                <p><a href="#">Forget password?</a></p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

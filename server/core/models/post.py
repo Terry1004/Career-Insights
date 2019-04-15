@@ -1,6 +1,8 @@
 from flask import current_app
 from .user import User
 from .tag import Tag
+from .comment import Comment
+from ..utils import to_like_string
 
 
 class Post:
@@ -12,18 +14,39 @@ class Post:
         self.id = post_id
         self.time_posted = time_posted
 
+    def __eq__(self, post):
+        return self.id == post.id
+
+    def __hash__(self):
+        return hash(self.id)
+
     @classmethod
-    def fetchall(cls, post_type):
+    def fetchall(cls, post_type, recent=None):
         sql_string = """
+            WITH LastComments AS (
+                SELECT postId, MAX(timePosted) AS timePosted
+                FROM Comments
+                GROUP BY postId
+            )
             SELECT p.uni, p.title, p.content, p.id, p.timePosted
             FROM Posts p JOIN Tags t
             ON p.id = t.postId
+            LEFT JOIN LastComments l
+            ON p.id = l.postId
             WHERE t.postType = %s
-            ORDER BY timePosted DESC
+            ORDER BY (
+                CASE
+                    WHEN l.timePosted is NULL THEN p.timePosted
+                    ELSE l.timePosted
+                END
+            ) DESC
         """
         with current_app.database.begin() as connection:
             cursor = connection.execute(sql_string, post_type)
-            posts_raw = cursor.fetchall()
+            if recent:
+                posts_raw = cursor.fetchmany(recent)
+            else:
+                posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
 
@@ -47,11 +70,10 @@ class Post:
         sql_string = """
             SELECT uni, title, content, id, timePosted
             FROM Posts
-            WHERE LOWER(title) LIKE %s
+            WHERE LOWER(title) LIKE %s ESCAPE ''
         """
-        title = title.lower().replace('_', r'\_').replace('%', r'\%')
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, '%{}%'.format(title))
+            cursor = connection.execute(sql_string, to_like_string(title))
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
@@ -62,11 +84,10 @@ class Post:
             SELECT p.uni, p.title, p.content, p.id, p.timePosted
             FROM Posts p JOIN Users u
             ON p.uni = u.uni
-            WHERE LOWER(u.userName) LIKE %s
+            WHERE LOWER(u.userName) LIKE %s ESCAPE ''
         """
-        name = name.lower().replace('_', r'\_').replace('%', r'\%')
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, '%{}%'.format(name))
+            cursor = connection.execute(sql_string, to_like_string(name))
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
@@ -77,41 +98,105 @@ class Post:
             SELECT p.uni, p.title, p.content, p.id, p.timePosted
             FROM Posts p JOIN Tags t
             ON p.id = t.postId
-            WHERE LOWER(t.company) LIKE %s
+            WHERE LOWER(t.company) LIKE %s ESCAPE ''
         """
-        company = company.lower().replace('_', r'\_').replace('%', r'\%')
         with current_app.database.begin() as connection:
-            cursor = connection.execute(sql_string, '%{}%'.format(company))
+            cursor = connection.execute(sql_string, to_like_string(company))
             posts_raw = cursor.fetchall()
             posts = [cls(*post_raw) for post_raw in posts_raw]
         return posts
 
-    # @classmethod
-    # def find_by_keywords(cls, keywords):
-    #     sql_string = """
-    #         WITH temp AS
-    #         (
-    #         SELECT postId
-    #         FROM Tags
-    #         WHERE %s LIKE ANY (hashtags)
-    #         OR domain LIKE %s
-    #         )
-    #         SELECT uni, title, content, id, timePosted
-    #         FROM Posts
-    #         WHERE id
-    #         IN (SELECT postId from temp)
-    #     """
-    #     with current_app.database.begin() as connection:
-    #         cursor = connection.execute(
-    #             sql_string,
-    #             keywords, str('%')+keywords+str('%')
-    #     )
-    #         posts_raw = cursor.fetchall()
-    #         posts = [cls(*post_raw) for post_raw in posts_raw]
-    #     if not posts:
-    #         return None
-    #     else:
-    #         return posts
+    @classmethod
+    def find_by_content(cls, content):
+        sql_string = """
+            SELECT uni, title, content, id, timePosted
+            FROM Posts p
+            WHERE LOWER(content) LIKE %s ESCAPE ''
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, to_like_string(content))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_domain(cls, domain):
+        sql_string = """
+            SELECT p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN Tags t
+            ON p.id = t.postId
+            WHERE LOWER(t.domain) LIKE %s ESCAPE ''
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, to_like_string(domain))
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_hashtags(cls, hashtags):
+        with_string = """
+            WITH TagsExpanded AS (
+                SELECT *
+                FROM Tags, UNNEST(hashtags) hashtag
+            )
+        """
+        single_sql_string = """
+            SELECT DISTINCT ON (p.id)
+            p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN TagsExpanded t
+            ON p.id = t.postId
+            WHERE LOWER(t.hashtag) LIKE %s ESCAPE ''
+            OR LOWER(t.domain) LIKE %s ESCAPE ''
+        """
+        sql_string = with_string + '\n' + '\nUNION\n'.join(
+            single_sql_string for _ in hashtags
+        )
+        placeholders = []
+        for hashtag in hashtags:
+            for _ in range(2):
+                placeholders.append(to_like_string(hashtag))
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, placeholders)
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
+
+    @classmethod
+    def find_by_keywords(cls, keywords):
+        with_string = """
+            WITH TagsExpanded AS (
+                SELECT *
+                FROM Tags, UNNEST(hashtags) hashtag
+            )
+        """
+        single_sql_string = """
+            SELECT DISTINCT ON (p.id)
+            p.uni, p.title, p.content, p.id, p.timePosted
+            FROM Posts p JOIN TagsExpanded t
+            ON p.id = t.postId
+            JOIN Users u
+            ON p.uni = u.uni
+            WHERE LOWER(p.title) LIKE %s ESCAPE ''
+            OR LOWER(p.content) LIKE %s ESCAPE ''
+            OR LOWER(u.userName) LIKE %s ESCAPE ''
+            OR LOWER(t.company) LIKE %s ESCAPE ''
+            OR LOWER(t.position) LIKE %s ESCAPE ''
+            OR LOWER(t.domain) LIKE %s ESCAPE ''
+            OR LOWER(t.hashtag) LIKE %s ESCAPE ''
+        """
+        sql_string = with_string + '\n' + '\nUNION\n'.join(
+            single_sql_string for _ in keywords
+        )
+        placeholders = []
+        for keyword in keywords:
+            for _ in range(7):
+                placeholders.append(to_like_string(keyword))
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, placeholders)
+            posts_raw = cursor.fetchall()
+            posts = [cls(*post_raw) for post_raw in posts_raw]
+        return posts
 
     @classmethod
     def get_max_id(cls):
@@ -148,6 +233,40 @@ class Post:
             return None
         else:
             return Tag.find_by_post_id(self.id)
+
+    @property
+    def num_comments(self):
+        if not self.id:
+            return None
+        else:
+            sql_string = """
+                SELECT COUNT(*)
+                FROM Comments
+                WHERE postId = %s
+            """
+            with current_app.database.begin() as connection:
+                cursor = connection.execute(sql_string, self.id)
+                count = cursor.fetchone()[0]
+            return count
+
+    @property
+    def last_comment(self):
+        if not self.id:
+            return None
+        else:
+            sql_string = """
+                SELECT postId, commentId, uni, content, timePosted
+                FROM Comments
+                WHERE postId = %s
+                ORDER BY timePosted DESC
+            """
+            with current_app.database.begin() as connection:
+                cursor = connection.execute(sql_string, self.id)
+                comment_raw = cursor.fetchone()
+            if comment_raw:
+                return Comment(*comment_raw)
+            else:
+                return None
 
     def save(self, update=False):
         insert_string = """

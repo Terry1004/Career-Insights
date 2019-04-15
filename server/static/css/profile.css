@@ -1,0 +1,46 @@
+.profile-title {
+    text-align: center;
+}
+.profile-wrapper {
+    margin: auto;
+    width: 70%;
+    padding-bottom: 5px;
+}
+.userinfo {
+    margin-bottom: 0.5rem;
+}
+.username {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.username > span {
+    margin-right: 1rem;
+}
+.username i {
+    font-size: 13px;
+}
+.username div {
+    display: inline;
+}
+.user-major span, .user-uni span, .user-email span {
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+.user-bio {
+    margin-top: 3.5rem;
+    padding-top: 0.5rem;
+    border-top: 2px solid hsl(0, 0%, 70%);
+}
+.user-bio p {
+    margin-bottom: 0;
+}
+.user-stats {
+    padding: 0.5rem;
+    text-align: center;
+    color: hsl(0, 0%, 40%);
+    font-size: 20px;
+}
+.user-stats-left {
+    border-right: 2px solid hsl(0, 0%, 70%)
+}

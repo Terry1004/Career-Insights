@@ -6,6 +6,7 @@ from ..models.post import Post
 from ..models.tag import Tag
 from ..models.comment import Comment
 from .auth import login_required
+from ..utils import non_empty_items
 
 
 blueprint = Blueprint('post', __name__, url_prefix='/post')
@@ -13,31 +14,53 @@ blueprint = Blueprint('post', __name__, url_prefix='/post')
 
 @blueprint.route('/', methods=['GET'])
 def index():
-    return render_template('post/index.html')
+    internship_type = 'Internship Experience'
+    fulltime_type = 'Full-time Experience'
+    interview_type = 'Interview Experience'
+    internship_posts = Post.fetchall(internship_type, recent=3)
+    fulltime_posts = Post.fetchall(fulltime_type, recent=3)
+    interview_posts = Post.fetchall(interview_type, recent=3)
+    return render_template(
+        'post/index.html',
+        internship_posts=internship_posts,
+        fulltime_posts=fulltime_posts,
+        interview_posts=interview_posts,
+        path=[],
+        curr_tab='Forum'
+    )
 
 
-@blueprint.route('/internship', methods=['GET'])
+@blueprint.route('/Internship Experience', methods=['GET'])
 def internship():
     post_type = 'Internship Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts, post_type=post_type)
+    return render_template(
+        'post/posts.html', posts=posts, post_type=post_type,
+        path=[('#', 'Internship Experience')], curr_tab='Forum'
+    )
 
 
-@blueprint.route('/fulltime', methods=['GET'])
+@blueprint.route('/Full-time Experience', methods=['GET'])
 def fulltime():
     post_type = 'Full-time Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts, post_type=post_type)
+    return render_template(
+        'post/posts.html', posts=posts, post_type=post_type,
+        path=[('#', 'Full-time Experience')], curr_tab='Forum'
+    )
 
 
-@blueprint.route('/interview', methods=['GET'])
+@blueprint.route('/Interview Experience', methods=['GET'])
 def interview():
     post_type = 'Interview Experience'
     posts = Post.fetchall(post_type)
-    return render_template('post/posts.html', posts=posts, post_type=post_type)
+    return render_template(
+        'post/posts.html', posts=posts, post_type=post_type,
+        path=[('#', 'Interview Experience')], curr_tab='Forum'
+    )
 
 
-@blueprint.route('/<post_id>', methods=['GET'])
+@blueprint.route('/<int:post_id>', methods=['GET'])
 def detail(post_id):
     post = Post.find_by_id(post_id)
     comments = Comment.fetchall(post_id)
@@ -47,7 +70,12 @@ def detail(post_id):
         uni = None
     if post:
         return render_template(
-            'post/detail.html', post=post, uni=uni, comments=comments
+            'post/detail.html', post=post, uni=uni, comments=comments,
+            path=[
+                ('/post/{}'.format(post.tag.post_type), post.tag.post_type),
+                ('#', post.title)
+            ],
+            curr_tab='Forum'
         )
     else:
         abort(404)
@@ -58,25 +86,57 @@ def detail(post_id):
 def add_post():
     if request.method == 'POST':
         uni = session['uni']
-        title = request.form['title']
-        content = request.form['content']
         post_type = request.form['post_type']
+        title = request.form['title'].strip()
+        content = request.form['content'].strip()
+        company = request.form['company'].strip()
         rate = request.form['rate']
-        position = request.form['position']
-        company = request.form['company']
-        hashtags = request.form['hashtags'].split(',')
-        domain = request.form['domain']
-        post_id = Post.get_max_id() + 1
-        post = Post(uni, title, content, post_id=post_id)
-        tag = Tag(
-            post_id, post_type, rate, position, company, hashtags, domain
-        )
-        post.save()
-        tag.save()
-        return redirect(url_for('post.detail', post_id=post_id))
+        position = request.form['position'].strip()
+        hashtags = non_empty_items(request.form['hashtags'].strip().split(','))
+        domain = request.form['domain'].strip()
+        error = False
+        if not title:
+            flash('Title is required.')
+            error = True
+        if not content:
+            flash('Content is required.')
+            error = True
+        if not company:
+            flash('Company is required.')
+            error = True
+        if not rate:
+            flash('Rate is required.')
+            error = True
+        try:
+            rate = int(rate)
+            if not 1 <= rate <= 5:
+                flash('Rate must be between 1 and 5.')
+                error = True
+        except ValueError:
+            flash('Rate must be an integer.')
+            error = True
+        if not position:
+            flash('Position is required.')
+            error = True
+        if error:
+            return redirect('?post-type={}'.format(post_type))
+        else:
+            post_id = Post.get_max_id() + 1
+            post = Post(uni, title, content, post_id=post_id)
+            tag = Tag(
+                post_id, post_type, rate, position, company, hashtags, domain
+            )
+            post.save()
+            tag.save()
+            return redirect(url_for('post.detail', post_id=post_id))
     post_type = request.args['post-type']
     return render_template(
-        'post/add-post.html', post=None, post_type=post_type
+        'post/add-post.html', post=None, post_type=post_type,
+        path=[
+            ('/post/{}'.format(post_type), post_type),
+            ('#', 'New Post')
+        ],
+        curr_tab='Forum'
     )
 
 
@@ -88,19 +148,51 @@ def edit_post(post_id):
     if post.uni != session['uni']:
         abort(403)
     if request.method == 'POST':
+        tag.post_type = request.form['post_type']
         post.title = request.form['title']
         post.content = request.form['content']
-        tag.post_type = request.form['post_type']
+        tag.company = request.form['company']
         tag.rate = request.form['rate']
         tag.position = request.form['position']
-        tag.company = request.form['company']
-        tag.hashtags = request.form['hashtags'].split(',')
+        tag.hashtags = non_empty_items(request.form['hashtags'].split(','))
         tag.domain = request.form['domain']
-        post.save(update=True)
-        tag.save(update=True)
-        return redirect(url_for('post.detail', post_id=post_id))
+        error = False
+        if not post.title:
+            flash('Title is required.')
+            error = True
+        if not post.content:
+            flash('Content is required.')
+            error = True
+        if not tag.company:
+            flash('Company is required.')
+            error = True
+        if not tag.rate:
+            flash('Rate is required.')
+            error = True
+        try:
+            rate = int(tag.rate)
+            if not 1 <= rate <= 5:
+                flash('Rate must be between 1 and 5.')
+                error = True
+        except ValueError:
+            flash('Rate must be an integer.')
+            error = True
+        if not tag.position:
+            flash('Position is required.')
+            error = True
+        if error:
+            return redirect('')
+        else:
+            post.save(update=True)
+            tag.save(update=True)
+            return redirect(url_for('post.detail', post_id=post_id))
     return render_template(
-        'post/add-post.html', post=post, post_type=tag.post_type
+        'post/add-post.html', post=post, post_type=tag.post_type,
+        path=[
+            ('/post/{}'.format(tag.post_type), tag.post_type),
+            ('#', 'Edit Post')
+        ],
+        curr_tab='Forum'
     )
 
 

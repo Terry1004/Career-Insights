@@ -1,5 +1,5 @@
 from flask import current_app
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 class User:
@@ -32,6 +32,30 @@ class User:
             return None
         else:
             return cls(*user, hash=False)
+
+    @property
+    def num_posts(self):
+        sql_string = """
+            SELECT COUNT(*)
+            FROM Posts
+            WHERE uni = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, self.uni)
+            count = cursor.fetchone()[0]
+        return count
+
+    @property
+    def num_comments(self):
+        sql_string = """
+            SELECT COUNT(*)
+            FROM Comments
+            WHERE uni = %s
+        """
+        with current_app.database.begin() as connection:
+            cursor = connection.execute(sql_string, self.uni)
+            count = cursor.fetchone()[0]
+        return count
 
     def save(self, update=False):
         insert_string = """

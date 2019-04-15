@@ -1,9 +1,47 @@
-{% extends "layout/default.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block main %}
-    <a href="/post/internship">Internship Experience</a>
-    <a href="/post/fulltime">Full-time Experience</a>
-    <a href="/post/interview">Interview Experience</a>
+    <div class="row mt">
+        <div class="large-12">
+            {% with post_type = 'Internship Experience', index = True %}
+                {% include "includes/topic-category.html" %}
+            {% endwith %}
+
+            {% include "includes/topic-header.html" %}
+
+            {% for post in internship_posts %}
+                {% include "includes/topic.html" %}
+            {% endfor %}   
+        </div>
+    </div>
+
+    <div class="row mt mb">
+        <div class="large-12">
+            {% with post_type = 'Full-time Experience', index = True %}
+                {% include "includes/topic-category.html" %}
+            {% endwith %}
+
+            {% include "includes/topic-header.html" %}
+
+            {% for post in fulltime_posts %}
+                {% include "includes/topic.html" %}
+            {% endfor %}   
+        </div>
+    </div>
+
+    <div class="row mb">
+        <div class="large-12">
+            {% with post_type = 'Interview Experience', index = True %}
+                {% include "includes/topic-category.html" %}
+            {% endwith %}
+
+            {% include "includes/topic-header.html" %}
+
+            {% for post in interview_posts %}
+                {% include "includes/topic.html" %}
+            {% endfor %}   
+        </div>
+    </div>
 {% endblock %}

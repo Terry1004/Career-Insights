@@ -15,7 +15,26 @@ def index():
     uni = session['uni']
     user = User.find_by_uni(uni)
     if user:
-        return render_template('profile/index.html', user=user)
+        return render_template(
+            'profile/index.html', user=user, uni=uni,
+            path=[('#', user.username)], curr_tab='Profile'
+        )
+    else:
+        abort(404)
+
+
+@blueprint.route('/view/<uni>', methods=['GET'])
+@login_required
+def view(uni):
+    user = User.find_by_uni(uni)
+    uni = session['uni']
+    if user.uni == uni:
+        return redirect(url_for('profile.index'))
+    elif user:
+        return render_template(
+            'profile/index.html', user=user, uni=uni,
+            path=[('#', user.username)]
+        )
     else:
         abort(404)
 
@@ -24,22 +43,22 @@ def index():
 @login_required
 def edit():
     uni = session['uni']
+    user = User.find_by_uni(uni)
     if request.method == 'POST':
-        error = None
-        password = request.form['password']
-        email = request.form['email']
-        personal_des = request.form['personal_des']
-        username = request.form['username']
-        major = request.form['major']
-        if not password:
-            error = 'Password cannot be empty.'
+        user.email = request.form['email']
+        user.personal_des = request.form['personal_des']
+        user.username = request.form['username']
+        user.major = request.form['major']
+        error = False
         if not error:
-            user = User(uni, password, email, personal_des, username, major)
             user.save(update=True)
             return redirect(url_for('profile.index'))
         flash(error)
-    user = User.find_by_uni(uni)
-    if user:
-            return render_template('profile/edit.html', user=user)
-    else:
-        return render_template('error/404.html', message='User Not Found.')
+    return render_template(
+        'profile/edit.html', user=user,
+        path=[
+            ('/profile', user.username),
+            ('#', 'Edit Profile')
+        ],
+        curr_tab='Profile'
+    )

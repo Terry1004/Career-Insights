@@ -1,24 +1,45 @@
-{% extends "layout/default.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Add Post{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+{% endblock %}
+
 {% block main %}
-    <form action="{% if post %}/post/edit-post/{{ post.id }}{% else %}/post/add-post{% endif %}" method="POST">
-        <p>Title: </p>
-        <input type="text" name="title" value="{% if post %}{{ post.title }}{% endif %}">
-        <p>Content: </p>
-        <textarea name="content" cols="30" rows="10">{% if post %}{{ post.content }}{% endif %}</textarea>
-        <input type="hidden" name="post_type" value="{{ post_type }}">
-        <p>Rate: </p>
-        <input type="number" name="rate" value="{% if post %}{{ post.tag.rate }}{% endif %}">
-        <p>Position</p>
-        <input type="text" name="position" value="{% if post %}{{ post.tag.position }}{% endif %}">
-        <p>Company: </p>
-        <input type="text" name="company" value="{% if post %}{{ post.tag.company }}{% endif %}">
-        <p>Hashtags: </p>
-        <input type="text" name="hashtags" value="{% if post %}{{ post.tag.hashtags_dis }}{% endif %}">
-        <p>Domain: </p>
-        <input type="text" name="domain" value="{% if post %}{{ post.tag.domain }}{% endif %}">
-        <input type="submit" value="{% if post %}Edit{% else %}Post{% endif %}">
-    </form>
+    <div class="row mt mb lpad">
+        <div class="form-wrapper">
+            <div class="form-title">
+                <h1>New Post</h1>
+            </div>
+            {% include "includes/form-error.html" %}
+            <form action="{% if post %}/post/edit-post/{{ post.id }}{% else %}/post/add-post{% endif %}" method="POST">
+                <input type="hidden" name="post_type" value="{{ post_type }}">
+                <div class="form-item required">
+                    <input type="text" name="title" value="{% if post %}{{ post.title }}{% endif %}" placeholder="Title">
+                </div>
+                <div class="form-item required">
+                    <input type="text" name="company" value="{% if post %}{{ post.tag.company }}{% endif %}" placeholder="Company">
+                </div>
+                <div class="form-item required">
+                    <input type="number" name="rate" value="{% if post %}{{ post.tag.rate }}{% endif %}" min="1" max="5" placeholder="Rating">
+                </div>
+                <div class="form-item required">
+                    <input type="text" name="position" value="{% if post %}{{ post.tag.position }}{% endif %}" placeholder="Position">
+                </div>
+                <div class="form-item">
+                    <input type="text" name="domain" value="{% if post %}{{ post.tag.domain }}{% endif %}" placeholder="Domain">
+                </div>
+                <div class="form-item">
+                    <input type="text" name="hashtags" value="{% if post %}{{ post.tag.hashtags_dis }}{% endif %}" placeholder="Hashtags">
+                </div>
+                <div class="form-item required">
+                    <textarea name="content" placeholder="Share you experience here...">{% if post %}{{ post.content }}{% endif %}</textarea>
+                </div>
+                <div class="button-panel">
+                    <input type="submit" class="button" value="{% if post %}Edit{% else %}Post{% endif %}">
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

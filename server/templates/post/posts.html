@@ -1,26 +1,15 @@
-{% extends "layout/default.html" %}
+{% extends "layout/base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ post_type }}{% endblock %}
 
 {% block main %}
-    <a href="/post/add-post?post-type={{ post_type }}">New Post</a>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <ul>
-                    
-                    <li>UNI: {{ post.uni }}</li>
-                    <li><a href="/post/{{ post.id }}">Title: {{ post.title }}</a></li>
-                    <li>Time Posted: {{ post.time_posted }}</li>
-                    {% if post.user %}
-                        <li>User Name: {{ post.user.username }}</li>
-                        <li>User Email: {{ post.user.email }}</li>
-                        <li>User Major: {{ post.user.major }}</li>
-                    {% else %}
-                        <p>User Deleted.</p>
-                    {% endif %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="row mt mb">
+        {% include "includes/topic-category.html" %}
+        {% include "includes/topic-header.html" %}
+        <div class="large-12">
+            {% for post in posts %}
+                {% include "includes/topic.html" %}
+            {% endfor %}   
+        </div>
+    </div>
 {% endblock %}

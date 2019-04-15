@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Search{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="row mb mt lpad">
+    <div class="form-wrapper">
+        <div class="form-title">
+            <h1>Search</h1>
+        </div>
+        {% include "includes/form-error.html" %}
+        <form action="/search/search-result" method="POST">
+            <div class="form-item">
+                <input type="text" name="keywords" placeholder="Some key words...">
+            </div>
+            <div class="form-item">
+                <input type="text" name="title" placeholder="Title">
+            </div>
+            <div class="form-item">
+                <input type="text" name="content" placeholder="Content">
+            </div>
+            <div class="form-item">
+                <input type="text" name="name" placeholder="Username">
+            </div>
+            <div class="form-item">
+                <input type="text" name="domain" placeholder="Domain">
+            </div>
+            <div class="form-item">
+                <input type="text" name="company" placeholder="Company">
+            </div>
+            <div class="form-item">
+                <input type="text" name="hashtags" placeholder="Hashtags">
+            </div>
+            <div class="button-panel">
+                <input type="submit" class="button" value="Search">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
