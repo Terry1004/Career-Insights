@@ -92,7 +92,6 @@ def login():
             session.clear()
             session['uni'] = user.uni
             session['username'] = user.username
-            print('User: {} login Successful'.format(user.uni))
             return redirect(url_for('index'))
     return render_template(
         'auth/login.html', path=[('#', 'Sign In')], curr_tab='Sign In'

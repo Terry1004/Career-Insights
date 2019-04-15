@@ -1,13 +1,18 @@
 {% extends "layout/base.html" %}
 
 {% block title %}{{ post.title }}{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/post-detail.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 {% endblock %}
 
+{% block js %}
+    <script src="{{ url_for('static', filename='js/post-detail.js') }}"></script>
+{% endblock %}
+
 {% block main %}
-    <div class="row mt lpad">
+    <div class="row mt lpad post-wrapper">
         <div class="large-12 columns post-title">
             <span>{{ post.title }}</span>
         </div>
@@ -57,10 +62,12 @@
         <div class="large12 columns">
             <div class="fl">
                 <div class="action-icon left-first">
-                    <a href="#">
-                        <i class="fa fa-comments"></i>
-                        <span>comment</span>
-                    </a>
+                    <button id="comment-form-displayer">
+                        <a>
+                            <i class="fa fa-comments"></i>
+                            <span>comment</span>
+                        </a>
+                    </button>
                 </div>
                 <div class="action-icon">
                     {% if uni == post.uni %}
@@ -85,8 +92,32 @@
                 </div>
             </div>
         </div>
+        <div class="large-12 columns comment-form" id="comment-form-wrapper">
+            <form action="/comment/add-comment" method="POST" style="margin-top: 2rem;">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <textarea name="content" placeholder="Add your comment..."></textarea>
+                <div class="fr">
+                    <div class="action-icon">
+                        <button type="button" id="comment-form-hidder">
+                            <a>
+                                <i class="fa fa-eye-slash"></i>
+                                <span>hide</span>
+                            </a>
+                        </button>
+                    </div>
+                    <div class="action-icon">
+                        <button type="submit">
+                            <a>
+                                <i class="fa fa-pencil"></i>
+                                <span>submit</span>
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="row mb lpad">
+    <div class="row mb lpad comment-wrapper">
         <div class="large-12 columns">
             {% for indent, reply in comments %}
                 <div class="comment lborder" style="margin-left: {{ indent * 5 }}em">
@@ -97,20 +128,16 @@
                     <p class="reply-content">{{ reply.content }}</p>
                     <div class="fr">
                         <div class="action-icon">
-                            <button>
-                                <i class="fa fa-comments"></i>
-                                <span>reply</span>
+                            <button class="reply-form-displayer" id="reply-form-displayer__{{ reply.id }}">
+                                <a>
+                                    <i class="fa fa-comments"></i>
+                                    <span>reply</span>
+                                </a>
                             </button>
                         </div>
                         {% if uni == reply.uni %}
-                        <!-- <form action="/comment/edit-comment" method="POST">
-                            <input type="hidden" name="post_id" value="{{ post.id }}">
-                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                            <textarea name="content" cols="50" rows="1"></textarea>
-                            <input type="submit" value="Edit">
-                        </form> -->
                         <div class="action-icon">
-                            <button>
+                            <button class="edit-reply-form-displayer" id="edit-reply-form__{{ reply.id }}">
                                 <a>
                                     <i class="fa fa-pencil-square-o"></i>
                                     <span>edit</span>
@@ -130,20 +157,59 @@
                             </form>
                         </div>
                         {% endif %}
-                        <!-- <form action="/comment/add-comment" method="POST">
+                    </div>
+                    <div class="reply-form" id="reply-form-wrapper__{{ reply.id }}">
+                        <form action="/comment/add-comment" method="POST">
                             <input type="hidden" name="post_id" value="{{ post.id }}">
                             <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                            <textarea name="content" cols="50" rows="1"></textarea>
-                            <input type="submit" value="Reply">
-                        </form> -->
+                            <textarea name="content" placeholder="Add your comment..."></textarea>
+                            <div class="fr">
+                                <div class="action-icon">
+                                    <button type="button" class="reply-form-hidder" id="reply-form-hidder__{{ reply.id }}">
+                                        <a>
+                                            <i class="fa fa-eye-slash"></i>
+                                            <span>hide</span>
+                                        </a>
+                                    </button>
+                                </div>
+                                <div class="action-icon">
+                                    <button type="submit">
+                                        <a>
+                                            <i class="fa fa-pencil"></i>
+                                            <span>submit</span>
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="edit-reply-form" id="edit-reply-form-wrapper__{{ reply.id }}">
+                        <form action="/comment/edit-comment" method="POST">
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                            <textarea name="content" placeholder="Edit your comment..."></textarea>
+                            <div class="fr">
+                                <div class="action-icon">
+                                    <button type="button" class="edit-reply-form-hidder" id="edit-reply-form-hidder__{{ reply.id }}">
+                                        <a>
+                                            <i class="fa fa-eye-slash"></i>
+                                            <span>hide</span>
+                                        </a>
+                                    </button>
+                                </div>
+                                <div class="action-icon">
+                                    <button type="submit">
+                                        <a>
+                                            <i class="fa fa-pencil"></i>
+                                            <span>submit</span>
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             {% endfor %}
-            <!-- <form action="/comment/add-comment" method="POST" style="margin-top: 2rem;">
-                <input type="hidden" name="post_id" value="{{ post.id }}">
-                <textarea name="content" cols="50" rows="1"></textarea>
-                <input type="submit" value="Comment">
-            </form> -->
         </div>
     </div>
 {% endblock %}
